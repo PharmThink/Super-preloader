@@ -5489,35 +5489,42 @@
           const enable = $('sp-fw-enable');
           $('sp-fw-setup').addEventListener('click', setup, false);
 
+          function getObj (obj) {
+            return (obj.type == 'checkbox' ? obj.checked : obj.value);
+          }
+          function setObj (obj, value) {
+            if (obj.type == 'checkbox') {
+              obj.checked = value;
+            } else {
+              obj.value = value;
+            }
+          }
           // 保存设置按钮.
           const savebutton = $('sp-fw-savebutton');
           savebutton.addEventListener('click', function (e) {
             const value = {
               Rurl: SSS.Rurl,
-              useiframe: gl(useiframe),
-              viewcontent: gl(viewcontent),
-              enable: gl(enable)
+              useiframe: getObj(useiframe),
+              viewcontent: getObj(viewcontent),
+              enable: getObj(enable)
             };
 
-            function gl (obj) {
-              return (obj.type == 'checkbox' ? obj.checked : obj.value);
-            }
             if (SSS.a_enable !== undefined) {
-              value.a_enable = gl(a_enable);
-              value.a_useiframe = gl(a_useiframe);
-              value.a_newIframe = gl(a_newIframe);
-              value.a_iloaded = gl(a_iloaded);
-              value.a_manualA = gl(a_manualA);
-              value.a_force = gl(a_force);
-              const t_a_itimeout = Number(gl(a_itimeout));
+              value.a_enable = getObj(a_enable);
+              value.a_useiframe = getObj(a_useiframe);
+              value.a_newIframe = getObj(a_newIframe);
+              value.a_iloaded = getObj(a_iloaded);
+              value.a_manualA = getObj(a_manualA);
+              value.a_force = getObj(a_force);
+              const t_a_itimeout = Number(getObj(a_itimeout));
               value.a_itimeout = isNaN(t_a_itimeout) ? SSS.a_itimeout : (t_a_itimeout >= 0 ? t_a_itimeout : 0);
-              const t_a_remain = Number(gl(a_remain));
+              const t_a_remain = Number(getObj(a_remain));
               value.a_remain = isNaN(t_a_remain) ? SSS.a_remain : Number(t_a_remain.toFixed(2));
-              const t_a_maxpage = Number(gl(a_maxpage));
+              const t_a_maxpage = Number(getObj(a_maxpage));
               value.a_maxpage = isNaN(t_a_maxpage) ? SSS.a_maxpage : (t_a_maxpage >= 1 ? t_a_maxpage : 1);
-              const t_a_ipages_1 = Number(gl(a_ipages_1));
-              value.a_ipages = [gl(a_ipages_0), (isNaN(t_a_ipages_1) ? SSS.a_ipages[1] : (t_a_ipages_1 >= 1 ? t_a_ipages_1 : 1))];
-              value.a_separator = gl(a_separator);
+              const t_a_ipages_1 = Number(getObj(a_ipages_1));
+              value.a_ipages = [getObj(a_ipages_0), (isNaN(t_a_ipages_1) ? SSS.a_ipages[1] : (t_a_ipages_1 >= 1 ? t_a_ipages_1 : 1))];
+              value.a_separator = getObj(a_separator);
             }
             // alert(xToString(value));
             SSS.savedValue[SSS.sedValueIndex] = value;
@@ -5530,31 +5537,23 @@
             }
           }, false);
 
-          function ll (obj, value) {
-            if (obj.type == 'checkbox') {
-              obj.checked = value;
-            } else {
-              obj.value = value;
-            }
-          }
-
           // 载入翻页设置.
           if (SSS.a_enable === undefined) { // 未定义翻页功能.
             a_enable.disabled = true;
             autopager_field.style.display = 'none';
           } else {
-            ll(a_enable, SSS.a_enable);
-            ll(a_useiframe, SSS.a_useiframe);
-            ll(a_newIframe, SSS.a_newIframe);
-            ll(a_iloaded, SSS.a_iloaded);
-            ll(a_itimeout, SSS.a_itimeout);
-            ll(a_manualA, SSS.a_manualA);
-            ll(a_force, SSS.a_force);
-            ll(a_remain, SSS.a_remain);
-            ll(a_maxpage, SSS.a_maxpage);
-            ll(a_separator, SSS.a_separator);
-            ll(a_ipages_0, SSS.a_ipages[0]);
-            ll(a_ipages_1, SSS.a_ipages[1]);
+            setObj(a_enable, SSS.a_enable);
+            setObj(a_useiframe, SSS.a_useiframe);
+            setObj(a_newIframe, SSS.a_newIframe);
+            setObj(a_iloaded, SSS.a_iloaded);
+            setObj(a_itimeout, SSS.a_itimeout);
+            setObj(a_manualA, SSS.a_manualA);
+            setObj(a_force, SSS.a_force);
+            setObj(a_remain, SSS.a_remain);
+            setObj(a_maxpage, SSS.a_maxpage);
+            setObj(a_separator, SSS.a_separator);
+            setObj(a_ipages_0, SSS.a_ipages[0]);
+            setObj(a_ipages_1, SSS.a_ipages[1]);
           }
 
           if (!SSS.a_enable) { // 当前不是翻页模式,禁用立即翻页按钮.
@@ -5566,11 +5565,11 @@
           }
 
           // 载入预读设置.
-          ll(useiframe, SSS.useiframe);
-          ll(viewcontent, SSS.viewcontent);
+          setObj(useiframe, SSS.useiframe);
+          setObj(viewcontent, SSS.viewcontent);
 
           // 总开关
-          ll(enable, SSS.enable);
+          setObj(enable, SSS.enable);
 
           const FWKG_state = {
             loading: '读取中状态',
