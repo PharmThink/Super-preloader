@@ -4995,9 +4995,7 @@
         // 例子
         // 'http://*.douban.com/*',
       ];
-      blackList = blackList.concat(prefs.excludes.split(/[\n\r]+/).map(function (line) {
-        return line.trim();
-      }));
+      blackList = blackList.concat(prefs.excludes.split(/[\n\r]+/).map((line) => line.trim()));
       const setup = function () {
         const d = document;
         const on = function (node, e, f) {
@@ -5146,9 +5144,7 @@
       // main functions
       const SP = {
         spinit: function () {
-          if (document.body.getAttribute('name') === 'MyNovelReader') {
-            return;
-          }
+          if (document.body.getAttribute('name') === 'MyNovelReader') return;
 
           this.loadSetting();
 
@@ -5160,23 +5156,20 @@
 
           // 查找是否是页面不刷新的站点
           const locationHref = location.href;
-          const hashSite = _.find(HashchangeSites, function (x) {
-            return toRE(x.url).test(locationHref);
-          });
+          const hashSite = _.find(HashchangeSites, x => toRE(x.url).test(locationHref));
 
-          const p2 = new Promise(function(resolve, reject) {
+          const p_updateJsonRule = new Promise((resolve, reject) => {
             jsonRule.updateJsonRule(resolve, reject);});
           if (hashSite) {
             isHashchangeSite = true;
             hashchangeTimer = hashSite.timer;
             debug('当前是页面不刷新的站点', hashSite);
-            const p1 = new Promise(function(resolve, reject){
-              setTimeout(resolve, hashchangeTimer);});
-            Promise.all([p1, p2]).then(function(values){
-              init(window, document);
+            const p_checkhash = new Promise((resolve, reject) => {
+              setTimeout(resolve, hashchangeTimer);
             });
+            Promise.all([p_checkhash, p_updateJsonRule]).then(() => init(window, document));
           } else {
-            p2.then(function(values) {
+            p_updateJsonRule.then(function(values) {
               init(window, document);
             });
           }
@@ -5193,8 +5186,7 @@
           }
 
           const loadDblclickPause = function (reload) {
-            const dblclickPause = prefs.dblclick_pause;
-            if (dblclickPause) {
+            if (prefs.dblclick_pause) {
               prefs.mouseA = false;
               prefs.Pbutton = [0, 0, 0];
             }
@@ -7524,9 +7516,7 @@
   var isUpdating = true;
 
   function checkUpdate (button) {
-    if (isUpdating) {
-      return;
-    }
+    if (isUpdating) return;
 
     button.innerHTML = '正在更新中...';
     button.disabled = 'disabled';
