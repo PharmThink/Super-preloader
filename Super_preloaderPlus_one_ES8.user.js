@@ -5950,10 +5950,7 @@
           function removeL (isRemoveAddPage) {
             debug('移除各种事件监听');
             floatWO.updateColor('Astop');
-            const _remove = remove;
-            for (var i = 0, ii = _remove.length; i < ii; i++) { // TODO: forEach()
-              _remove[i]();
-            }
+            remove.forEach(x => x());
 
             if (isRemoveAddPage) {
               const separator = document.querySelector('.sp-separator');
@@ -5991,8 +5988,7 @@
             removeL(true);
 
             setTimeout(function () {
-              nextlink = getElement(SSS.nextLink || 'auto;');
-              nextlink = getFullHref(nextlink);
+              nextlink = getFullHref(getElement(SSS.nextLink || 'auto;'));
               // preLink = getElement(SSS.preLink || 'auto;');
               autopager(SSS, floatWO);
             }, hashchangeTimer);
@@ -6109,8 +6105,7 @@
             }
           }
 
-          var ipagesmode = SSS.a_ipages[0];
-          var ipagesnumber = SSS.a_ipages[1];
+          var [ipagesmode, ipagesnumber] = SSS.a_ipages;
           var scrollDo = nullFn;
           var afterInsertDo = nullFn;
           if (prefs.Aplus) {
@@ -6457,10 +6452,8 @@
               try {
                 nodes = getAllElements(SSS.filter, fragment);
               } catch (e) {}
-              var nodes_x;
-              for (i = nodes.length - 1; i >= 0; i--) {
-                nodes_x = nodes[i];
-                nodes_x.parentNode.removeChild(nodes_x);
+              for (let node of nodes) {
+				node.parentNode.removeChild(node);
               }
             }
 
@@ -6530,20 +6523,14 @@
               }, 99);
             }
 
-            if (SSS.a_replaceE) {
-              // TODO: map()
+            if (SSS.a_replaceE) { // 替换指定元素
               const oldE = getAllElements(SSS.a_replaceE);
-              const oldE_lt = oldE.length;
-              // alert(oldE_lt);
-              if (oldE_lt > 0) {
+              if (oldE.length > 0) {
                 const newE = getAllElements(SSS.a_replaceE, false, doc, win);
-                const newE_lt = newE.length;
-                // alert(newE_lt);
-                if (newE_lt == oldE_lt) { // 替换
-                  var oldE_x, newE_x;
-                  for (i = 0; i < newE_lt; i++) {
-                    oldE_x = oldE[i];
-                    newE_x = newE[i];
+                if (newE.length == oldE.length) { // 元素均找到，执行替换
+                  for (i = 0; i < newE.length; i++) {
+                    let oldE_x = oldE[i];
+                    let newE_x = newE[i];
                     newE_x = doc.importNode(newE_x, true);
                     oldE_x.parentNode.replaceChild(newE_x, oldE_x);
                   }
@@ -6607,11 +6594,9 @@
           var relatedObj_0, relatedObj_1;
           if (SSS.a_relatedObj) {
             if (_.isArray(SSS.a_relatedObj)) {
-              relatedObj_0 = SSS.a_relatedObj[0];
-              relatedObj_1 = SSS.a_relatedObj[1];
+              [relatedObj_0, relatedObj_1] = SSS.a_relatedObj;
             } else {
-              relatedObj_0 = SSS.a_pageElement;
-              relatedObj_1 = 'bottom';
+              [relatedObj_0, relatedObj_1] = [SSS.a_pageElement, 'bottom'];
             }
           }
 
@@ -7188,10 +7173,6 @@
             docChecked = true;
           }
 
-          const _prePageKey = prePageKey;
-          const _nextPageKey = nextPageKey;
-          const _nPKL = nextPageKey.length;
-          const _pPKL = prePageKey.length;
           const _getFullHref = getFullHref;
           const _getAllElementsByXpath = getAllElementsByXpath;
           const _Number = Number;
@@ -7257,14 +7238,12 @@
                   initSD = 0;
 
                   if (!_nextlink) {
-                    preS1 = a.previousSibling;
-                    preS2 = a.previousElementSibling;
+                    [preS1, preS2] = [a.previousSibling, a.previousElementSibling];
 
                     while (!(preS1 || preS2) && initSD < searchD) {
                       aP = aP.parentNode;
                       if (aP) {
-                        preS1 = aP.previousSibling;
-                        preS2 = aP.previousElementSibling;
+                        [preS1, preS2] = [aP.previousSibling, aP.previousElementSibling];
                       }
                       initSD++;
                       // alert('initSD: '+initSD);
@@ -7299,14 +7278,12 @@
                   }
 
                   if (!_prelink) {
-                    nextS1 = a.nextSibling;
-                    nextS2 = a.nextElementSibling;
+                    [nextS1, nextS2] = [a.previousSibling, a.previousElementSibling];
 
                     while (!(nextS1 || nextS2) && initSD < searchD) {
                       aP = aP.parentNode;
                       if (aP) {
-                        nextS1 = a.nextSibling;
-                        nextS2 = a.nextElementSibling;
+                        [nextS1, nextS2] = [a.previousSibling, a.previousElementSibling];
                       }
                       initSD++;
                       // alert('initSD: '+initSD);
@@ -7353,8 +7330,7 @@
             if (!atext) continue;
             if (!_nextlink) {
               xbreak = false;
-              for (k = 0; k < _nPKL; k++) {
-                keytext = _nextPageKey[k];
+              for (let keytext of nextPageKey) {
                 if (!(keytext.test(atext))) continue;
                 _nextlink = finalCheck(a, 'next');
                 xbreak = true;
@@ -7363,8 +7339,7 @@
               if (xbreak || _nextlink) continue;
             }
             if (!_prelink) {
-              for (k = 0; k < _pPKL; k++) {
-                keytext = _prePageKey[k];
+              for (let keytext of prePageKey) {
                 if (!(keytext.test(atext))) continue;
                 _prelink = finalCheck(a, 'pre');
                 break;
@@ -7487,8 +7462,8 @@
         } else {
           ralativePageNumarray = getRalativePageNumArray(lastUrl, currentUrl);
           ralativeOff = ralativePageNumarray[1] - ralativePageNumarray[0]; // 用的上一页的相对信息比较的，要补充差值……
-          ralativePageNumarray[1] = ralativePageNumarray[1] + ralativeOff;
-          ralativePageNumarray[0] = ralativePageNumarray[0] + ralativeOff;
+          ralativePageNumarray[1] += ralativeOff;
+          ralativePageNumarray[0] += ralativeOff;
         }
 
         // console.log('[获取实际页数] ', '要比较的3个页数：',arguments, '，得到的差值:', ralativePageNumarray);
@@ -7957,11 +7932,9 @@
 
   function removeScripts (node) { // 移除元素的 script
     const scripts = getAllElements('css;script', node);
-    var scripts_x;
-    for (var i = scripts.length - 1; i >= 0; i--) {
-      scripts_x = scripts[i];
-      scripts_x.parentNode.removeChild(scripts_x);
-    }
+    for (let s of scripts) {
+      s.parentNode.removeChild(s);
+	}
   }
 
   var noticeDiv;
