@@ -7165,13 +7165,6 @@
             docChecked = true;
           }
 
-          const _getFullHref = getFullHref;
-          const _getAllElementsByXpath = getAllElementsByXpath;
-          const _Number = Number;
-          const _domain_port = domain_port;
-          const alllinks = doc.links;
-          const alllinksl = alllinks.length;
-
           const curLHref = cplink;
           var _nextlink;
           var _prelink;
@@ -7182,7 +7175,6 @@
             _prelink = true;
           }
 
-          const DCEnable = autoMatch.digitalCheck;
           const DCRE = /^\s*\D{0,1}(\d+)\D{0,1}\s*$/;
 
           var i, a, ahref, atext, numtext;
@@ -7197,10 +7189,10 @@
             if (ahref == '#') {
               return null;
             }
-            ahref = _getFullHref(ahref); // 从相对路径获取完全的href;
+            ahref = getFullHref(ahref); // 从相对路径获取完全的href;
 
             // 3个条件:http协议链接,非跳到当前页面的链接,非跨域
-            if (/^https?:/i.test(ahref) && ahref.replace(/#.*$/, '') != curLHref && ahref.match(/https?:\/\/([^\/]+)/)[1] == _domain_port) {
+            if (/^https?:/i.test(ahref) && ahref.replace(/#.*$/, '') != curLHref && ahref.match(/https?:\/\/([^\/]+)/)[1] == domain_port) {
               if (xbug) {
                 debug((type == 'pre' ? '上一页' : '下一页') + '匹配到的关键字为:', atext);
               }
@@ -7210,17 +7202,17 @@
           }
 
           if (xbug) {
-            debug('全文档链接数量:', alllinksl);
+            debug('全文档链接数量:', doc.links.length);
           }
 
-          for (let a of alllinks) {
+          for (let a of doc.links) {
             if (_nextlink && _prelink) break;
             if (!a) continue; // undefined跳过
             // links集合返回的本来就是包含href的a元素..所以不用检测
             // if(!a.hasAttribute("href"))continue;
             atext = a.textContent;
             if (atext) {
-              if (DCEnable) {
+              if (autoMatch.digitalCheck) {
                 numtext = atext.match(DCRE);
                 if (numtext) { // 是不是纯数字
                   // debug(numtext);
@@ -7255,11 +7247,11 @@
                         pSNText = pSNText[1];
                         // debug(pSNText)
                         // alert(pSNText)
-                        if (_Number(pSNText) == _Number(numtext) - 1) {
+                        if (Number(pSNText) == Number(numtext) - 1) {
                           // alert(searchedD);
                           nodeType = preSS.nodeType;
                           // alert(nodeType);
-                          if (nodeType == 3 || (nodeType == 1 && (searchedD ? _getAllElementsByXpath('./descendant-or-self::a[@href]', preSS, doc).snapshotLength === 0 : (!preSS.hasAttribute('href') || _getFullHref(preSS.getAttribute('href')) == curLHref)))) {
+                          if (nodeType == 3 || (nodeType == 1 && (searchedD ? getAllElementsByXpath('./descendant-or-self::a[@href]', preSS, doc).snapshotLength === 0 : (!preSS.hasAttribute('href') || getFullHref(preSS.getAttribute('href')) == curLHref)))) {
                             _nextlink = finalCheck(a, 'next');
                             // alert(_nextlink);
                           }
@@ -7294,11 +7286,11 @@
                       if (nSNText) {
                         nSNText = nSNText[1];
                         // alert(pSNText)
-                        if (_Number(nSNText) == _Number(numtext) + 1) {
+                        if (Number(nSNText) == Number(numtext) + 1) {
                           // alert(searchedD);
                           nodeType = nextSS.nodeType;
                           // alert(nodeType);
-                          if (nodeType == 3 || (nodeType == 1 && (searchedD ? _getAllElementsByXpath('./descendant-or-self::a[@href]', nextSS, doc).snapshotLength === 0 : (!nextSS.hasAttribute('href') || _getFullHref(nextSS.getAttribute('href')) == curLHref)))) {
+                          if (nodeType == 3 || (nodeType == 1 && (searchedD ? getAllElementsByXpath('./descendant-or-self::a[@href]', nextSS, doc).snapshotLength === 0 : (!nextSS.hasAttribute('href') || getFullHref(nextSS.getAttribute('href')) == curLHref)))) {
                             _prelink = finalCheck(a, 'pre');
                             // alert(_prelink);
                           }
