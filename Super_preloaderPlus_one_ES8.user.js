@@ -5410,12 +5410,12 @@
           div.innerHTML = floatWindowUI();
           document.body.appendChild(div);
 
-          function $ (id) {
+          function $id (id) {
             return document.getElementById(id);
           }
 
-          const rect = $('sp-fw-rect'); // 悬浮窗的小正方形,用颜色描述当前的状态.
-          const spanel = $('sp-fw-content'); // 设置面板.
+          const rect = $id('sp-fw-rect'); // 悬浮窗的小正方形,用颜色描述当前的状态.
+          const spanel = $id('sp-fw-content'); // 设置面板.
 
           const spanelc = {
             show: function () {
@@ -5443,38 +5443,38 @@
             rectt2 = setTimeout(spanelc.hide, 288);
           }, false);
 
-          const dot = $('sp-fw-dot'); // 载入完成后,显示的小点
+          const dot = $id('sp-fw-dot'); // 载入完成后,显示的小点
           dot.style.backgroundColor = FWKG_color.dot;
 
-          const cur_mode = $('sp-fw-cur-mode'); // 当载入状态时,用来描述当前是翻页模式,还是预读模式.
+          const cur_mode = $id('sp-fw-cur-mode'); // 当载入状态时,用来描述当前是翻页模式,还是预读模式.
           cur_mode.style.backgroundColor = SSS.a_enable ? FWKG_color.autopager : FWKG_color.prefetcher;
 
-          const a_enable = $('sp-fw-a_enable'); // 启用翻页模式
-          const autopager_field = $('sp-fw-autopager-field'); // 翻页设置区域
+          const a_enable = $id('sp-fw-a_enable'); // 启用翻页模式
+          const autopager_field = $id('sp-fw-autopager-field'); // 翻页设置区域
 
           // 预读设置
-          const useiframe = $('sp-fw-useiframe');
-          const viewcontent = $('sp-fw-viewcontent');
+          const useiframe = $id('sp-fw-useiframe');
+          const viewcontent = $id('sp-fw-viewcontent');
 
           // 翻页设置
-          const a_useiframe = $('sp-fw-a_useiframe');
-          const a_iloaded = $('sp-fw-a_iloaded');
-          const a_itimeout = $('sp-fw-a_itimeout');
-          const a_manualA = $('sp-fw-a_manualA');
-          const a_remain = $('sp-fw-a_remain');
-          const a_maxpage = $('sp-fw-a_maxpage');
-          const a_separator = $('sp-fw-a_separator');
-          const a_ipages_0 = $('sp-fw-a_ipages_0');
-          const a_ipages_1 = $('sp-fw-a_ipages_1');
-          const a_force = $('sp-fw-a_force');
+          const a_useiframe = $id('sp-fw-a_useiframe');
+          const a_iloaded = $id('sp-fw-a_iloaded');
+          const a_itimeout = $id('sp-fw-a_itimeout');
+          const a_manualA = $id('sp-fw-a_manualA');
+          const a_remain = $id('sp-fw-a_remain');
+          const a_maxpage = $id('sp-fw-a_maxpage');
+          const a_separator = $id('sp-fw-a_separator');
+          const a_ipages_0 = $id('sp-fw-a_ipages_0');
+          const a_ipages_1 = $id('sp-fw-a_ipages_1');
+          const a_force = $id('sp-fw-a_force');
 
           // newIframe 输入框的点击
-          const a_newIframe = $('sp-fw-a_newIframe');
+          const a_newIframe = $id('sp-fw-a_newIframe');
           a_newIframe.addEventListener('click', function () {
             a_useiframe.checked = a_newIframe.checked;
           }, false);
 
-          const a_starti = $('sp-fw-a_starti'); // 开始立即翻页
+          const a_starti = $id('sp-fw-a_starti'); // 开始立即翻页
           a_starti.addEventListener('click', function () {
             if (this.disabled) return;
             var value = Number(a_ipages_1.value);
@@ -5486,8 +5486,8 @@
           }, false);
 
           // 总开关
-          const enable = $('sp-fw-enable');
-          $('sp-fw-setup').addEventListener('click', setup, false);
+          const enable = $id('sp-fw-enable');
+          $id('sp-fw-setup').addEventListener('click', setup, false);
 
           function getObj (obj) {
             return (obj.type == 'checkbox' ? obj.checked : obj.value);
@@ -5500,7 +5500,7 @@
             }
           }
           // 保存设置按钮.
-          const savebutton = $('sp-fw-savebutton');
+          const savebutton = $id('sp-fw-savebutton');
           savebutton.addEventListener('click', function (e) {
             const value = {
               Rurl: SSS.Rurl,
