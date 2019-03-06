@@ -5080,9 +5080,14 @@
         }
         div = null;
 
-        const close = function () {
-          if (styleNode) {
-            styleNode.parentNode.removeChild(styleNode);
+        const close = async function () {
+          let realStyleNode;
+          if (typeof styleNode.then == "function") { // https://github.com/violentmonkey/violentmonkey/issues/217
+            realStyleNode = await styleNode;
+          }
+          let s = realStyleNode || styleNode;
+          if (s) {
+            s.parentNode.removeChild(s);
           }
           const div = $perfsId('setup');
           div.parentNode.removeChild(div);
