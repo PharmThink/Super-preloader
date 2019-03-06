@@ -7203,8 +7203,10 @@
             debug('全文档链接数量:', doc.links.length);
           }
 
+          i = 0; // TODO: var naming conflict
           for (let a of doc.links) {
             if (_nextlink && _prelink) break;
+            i += 1;
             if (!a) continue; // undefined跳过
             // links集合返回的本来就是包含href的a元素..所以不用检测
             // if(!a.hasAttribute("href"))continue;
