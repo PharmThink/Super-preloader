@@ -6430,11 +6430,10 @@
               nextlink = null;
             }
 
-            var i, pe_x, pe_x_nn;
             for (let page of pageElements) {
-              pe_x_nn = page.nodeName;
-              if (pe_x_nn == 'BODY' || pe_x_nn == 'HTML' || pe_x_nn == 'SCRIPT') continue;
-              fragment.appendChild(pe_x);
+              let pN = page.nodeName;
+              if (['BODY', 'HTML', 'SCRIPT'].includes(pN)) continue;
+              fragment.appendChild(page);
             }
 
             if (SSS.filter && typeof (SSS.filter) === 'string') { // 功能未完善.
