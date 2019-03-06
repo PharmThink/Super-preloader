@@ -5002,10 +5002,10 @@
           node.addEventListener(e, f, false);
         };
 
-        const $ = function (s) {
+        const $perfsId = function (s) {
           return d.getElementById('sp-prefs-' + s);
         };
-        if ($('setup')) return;
+        if ($perfsId('setup')) return;
 
         const styleNode = GM.addStyle('\
                       #sp-prefs-setup { position:fixed;z-index:2147483647;top:30px;right:60px;padding:20px 30px;background:#eee;width:500px;border:1px solid black;\
@@ -5084,23 +5084,23 @@
           if (styleNode) {
             styleNode.parentNode.removeChild(styleNode);
           }
-          const div = $('setup');
+          const div = $perfsId('setup');
           div.parentNode.removeChild(div);
         };
 
-        on($('ok'), 'click', function () {
-          prefs.ChineseUI = !!$('ChineseUI').checked;
+        on($perfsId('ok'), 'click', function () {
+          prefs.ChineseUI = !!$perfsId('ChineseUI').checked;
           // document.getElementById('sp-fw-container').innerHTML = floatWindowUI();
-          prefs.custom_siteinfo = $('custom_siteinfo').value;
-          prefs.debug = xbug = !!$('debug').checked;
-          prefs.dblclick_pause = !!$('dblclick_pause').checked;
-          prefs.enableHistory = !!$('enableHistory').checked;
-          prefs.excludes = $('excludes').value;
-          prefs.forceTargetWindow = !!$('forceTargetWindow').checked;
+          prefs.custom_siteinfo = $perfsId('custom_siteinfo').value;
+          prefs.debug = xbug = !!$perfsId('debug').checked;
+          prefs.dblclick_pause = !!$perfsId('dblclick_pause').checked;
+          prefs.enableHistory = !!$perfsId('enableHistory').checked;
+          prefs.excludes = $perfsId('excludes').value;
+          prefs.forceTargetWindow = !!$perfsId('forceTargetWindow').checked;
 
-          SITEINFO_D.useiframe = !!$('SITEINFO_D-useiframe').checked;
-          SITEINFO_D.autopager.enable = !!$('SITEINFO_D-a_enable').checked;
-          SITEINFO_D.autopager.force_enable = !!$('SITEINFO_D-a_force_enable').checked;
+          SITEINFO_D.useiframe = !!$perfsId('SITEINFO_D-useiframe').checked;
+          SITEINFO_D.autopager.enable = !!$perfsId('SITEINFO_D-a_enable').checked;
+          SITEINFO_D.autopager.force_enable = !!$perfsId('SITEINFO_D-a_force_enable').checked;
 
           autoMatch.useiframe = SITEINFO_D.useiframe;
 
@@ -5116,8 +5116,8 @@
           });
         });
 
-        on($('updaterule'), 'click', function(){
-            $('updaterule').innerHTML = "Updating...";
+        on($perfsId('updaterule'), 'click', function(){
+            $perfsId('updaterule').innerHTML = "Updating...";
             const p = new Promise(function(resolve, reject) {
                 jsonRule.updateJsonRule(resolve, reject, true);});
             p.then(function(values){
@@ -5127,18 +5127,18 @@
             });
         });
 
-        on($('cancel'), 'click', close);
+        on($perfsId('cancel'), 'click', close);
 
-        $('debug').checked = xbug;
-        $('ChineseUI').checked = prefs.ChineseUI;
-        $('enableHistory').checked = prefs.enableHistory;
-        $('forceTargetWindow').checked = prefs.forceTargetWindow;
-        $('dblclick_pause').checked = prefs.dblclick_pause;
-        $('SITEINFO_D-useiframe').checked = SITEINFO_D.useiframe;
-        $('SITEINFO_D-a_enable').checked = SITEINFO_D.autopager.enable;
-        $('SITEINFO_D-a_force_enable').checked = SITEINFO_D.autopager.force_enable;
-        $('excludes').value = prefs.excludes;
-        $('custom_siteinfo').value = prefs.custom_siteinfo;
+        $perfsId('debug').checked = xbug;
+        $perfsId('ChineseUI').checked = prefs.ChineseUI;
+        $perfsId('enableHistory').checked = prefs.enableHistory;
+        $perfsId('forceTargetWindow').checked = prefs.forceTargetWindow;
+        $perfsId('dblclick_pause').checked = prefs.dblclick_pause;
+        $perfsId('SITEINFO_D-useiframe').checked = SITEINFO_D.useiframe;
+        $perfsId('SITEINFO_D-a_enable').checked = SITEINFO_D.autopager.enable;
+        $perfsId('SITEINFO_D-a_force_enable').checked = SITEINFO_D.autopager.force_enable;
+        $perfsId('excludes').value = prefs.excludes;
+        $perfsId('custom_siteinfo').value = prefs.custom_siteinfo;
       };
 
       // main functions
