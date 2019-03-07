@@ -4847,7 +4847,7 @@
         try {
           SITEINFO_json = await this.updateRule();
           this.info.expire = new Date(currentDate.getTime() + this.info.updatePeriodInDay*24*60*60*1000);
-          this.info.lastUpdate = true;   //success
+          this.info.lastUpdate = true; //success
           GM.setValue('SITEINFO_json', JSON.stringify(SITEINFO_json));
         }
         catch (e) {
@@ -5078,7 +5078,7 @@
 
         const close = async function () {
           let realStyleNode;
-          if (typeof styleNode.then == "function") { // https://github.com/violentmonkey/violentmonkey/issues/217
+          if (typeof styleNode.then === "function") { // https://github.com/violentmonkey/violentmonkey/issues/217
             realStyleNode = await styleNode;
           }
           const s = realStyleNode || styleNode;
@@ -8186,6 +8186,7 @@
   // 任何转成字符串，存储，修改过
   function xToString (x) {
     function toStr (x) {
+      let rStr = '';
       switch (typeof x) {
       case 'undefined':
         return Str(x);
@@ -8230,11 +8231,9 @@
         if (x === null) {
           return Str(x);
         }
-        let rStr = '';
-        let i;
         switch (x.constructor.name) {
         case 'Object':
-          for (i in x) {
+          for (const i in x) {
             if (!x.hasOwnProperty(i)) { // 去掉原型链上的属性.
               continue;
             }
@@ -8242,7 +8241,7 @@
           }
           return ('{' + rStr.replace(/,$/i, '') + '}');
         case 'Array':
-          for (i in x) {
+          for (const i in x) {
             if (!x.hasOwnProperty(i)) { // 去掉原型链上的属性.
               continue;
             }
