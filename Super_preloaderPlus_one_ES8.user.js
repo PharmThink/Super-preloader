@@ -6513,11 +6513,7 @@
 
             if (imgs) { // 非opera,在iframeDOM取出数据时需要重载图片.
               setTimeout(() => {
-                const _imgs = imgs;
-                let i;
-                let ii;
-                var img;
-                for (const img of _imgs) {
+                for (const img of imgs) {
                   const src = img.src;
                   img.src = src;
                 }
@@ -7070,13 +7066,13 @@
           }
           if (savedValue) {
             SSS.savedValue = savedValue;
-            let i, ii;
-            for (const savedValue_x of savedValue) {
-              const savedValue_x = savedValue[i];
-              if (savedValue_x.Rurl == SSS.Rurl) {
-                for (const ix in savedValue_x) {
-                  if (savedValue_x.hasOwnProperty(ix)) {
-                    SSS[ix] = savedValue_x[ix]; // 加载键值.
+            let i;
+            for (const s of savedValue) {
+              i++;
+              if (s.Rurl == SSS.Rurl) {
+                for (const ix in s) {
+                  if (s.hasOwnProperty(ix)) {
+                    SSS[ix] = s[ix]; // 加载键值.
                   }
                 }
                 break;
@@ -7183,8 +7179,6 @@
           const DCRE = /^\s*\D{0,1}(\d+)\D{0,1}\s*$/;
 
           let i;
-          var a;
-          let ahref;
           let atext;
           let numtext;
           let aP; let initSD; const searchD = 1;
@@ -7192,12 +7186,7 @@
           let preS1; let preS2; let searchedD; let pSNText; let preSS; let nodeType;
           let nextS1, nextS2, nSNText, nextSS;
           let aimgs;
-          let j;
-          let jj;
-          var aimg_x;
           let xbreak;
-          let k;
-          let keytext;
 
           function finalCheck (a, type) {
             let ahref = a.getAttribute('href'); // 在chrome上当是非当前页面文档对象的时候直接用a.href访问,不返回href
@@ -7606,9 +7595,7 @@
       if (typeof mFails === 'string') {
         str = mFails;
       } else {
-        var fx;
         const array = [];
-        let i, ii;
         let mValue;
         for (const fx of mFails) {
           if (!fx) continue;
