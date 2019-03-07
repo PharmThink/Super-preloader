@@ -5886,7 +5886,7 @@
           if (insertPoint) {
             debug('验证是否能找到插入位置节点:成功,', insertPoint);
           } else {
-            C.error('验证是否能找到插入位置节点:失败', (SSS.a_HT_insert ? SSS.a_HT_insert[0] : ''), 'JS执行终止');
+            console.error('验证是否能找到插入位置节点:失败', (SSS.a_HT_insert ? SSS.a_HT_insert[0] : ''), 'JS执行终止');
             floatWO.updateColor('Astop');
             return;
           }
@@ -5900,7 +5900,7 @@
           if (pageElement.length > 0) {
             debug('验证是否能找到主要元素:成功,', pageElement);
           } else {
-            C.error('验证是否能找到主要元素:失败,', SSS.a_pageElement, 'JS执行终止');
+            console.error('验证是否能找到主要元素:失败,', SSS.a_pageElement, 'JS执行终止');
             floatWO.updateColor('Astop');
             return;
           }
@@ -5932,7 +5932,7 @@
             doc = win = createDocumentByString(str);
 
             if (!doc) {
-              C.error('文档对象创建失败');
+              console.error('文档对象创建失败');
               removeL();
               return;
             }
@@ -6404,7 +6404,7 @@
               try {
                 SSS.a_documentFilter(doc, nextlink);
               } catch (e) {
-                C.error('执行 documentFilter 错误', e, SSS.a_documentFilter.toString());
+                console.error('执行 documentFilter 错误', e, SSS.a_documentFilter.toString());
               }
             }
 
@@ -6507,7 +6507,7 @@
                 SSS.filter(pageElements);
                 debug('执行 filter(pages) 成功');
               } catch (e) {
-                C.error('执行 filter(pages) 错误', e, SSS.filter.toString());
+                console.error('执行 filter(pages) 错误', e, SSS.filter.toString());
               }
             }
 
@@ -6772,7 +6772,7 @@
                 const str = req.responseText;
                 const doc = createDocumentByString(str);
                 if (!doc) {
-                  C.error('文档对象创建失败!');
+                  console.error('文档对象创建失败!');
                   return;
                 }
 
@@ -7576,7 +7576,6 @@
   // ------------------------下面的不要管他-----------------
   /// ////////////////////////////////////////////////////////////////
 
-  const C = console;
   var debug = function () {};
   // 变量
   var isHashchangeSite = false;
@@ -8106,7 +8105,7 @@
 
   function createDocumentByString (str) { // string转为DOM
     if (!str) {
-      C.error('没有找到要转成DOM的字符串');
+      console.error('没有找到要转成DOM的字符串');
       return;
     }
     if (document.documentElement.nodeName !== 'HTML') {
