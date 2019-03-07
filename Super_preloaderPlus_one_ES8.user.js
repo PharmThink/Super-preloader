@@ -75,7 +75,7 @@
   ];
 
   function CheckIframe () {
-    for (let c of ChangeIframeSites) {
+    for (const c of ChangeIframeSites) {
       if (toRE(c).test(window.location.href)) {
         try {
           return window.self !== window.top;
@@ -99,7 +99,7 @@
     mutationParser: function (mutation, ncheck) {
       if (mutation.type == 'childList') {
         if (mutation.addedNodes) {
-          for (let node of mutation.addedNodes) {
+          for (const node of mutation.addedNodes) {
             if (node.className.indexOf('photo-view') != -1) {
               ncheck = ncheck + 1;
               break;
@@ -117,9 +117,9 @@
   if (CheckIframe()) { // 搜狗,iframe里面怎么不加载js啊?
     // 去掉了原版的另一种方法，因为新版本 chrome 已经支持。旧版本 chrome iframe里面 无法访问window.parent,返回undefined
     const domloaded = function () { // 滚动到底部,针对,某些使用滚动事件加载图片的网站.
-      var targetNode;
-      var LLS;
-      for (let site of LazyLoadSites) {
+      let targetNode;
+      let LLS;
+      for (const site of LazyLoadSites) {
         if (toRE(site.url).test(window.location.href)) {
           // Select the node that will be observed for mutations
           targetNode = getElementByXpath(site.target, document, document);
@@ -129,11 +129,11 @@
       }
 
       if (targetNode) {
-        var num_node_check = 0;
+        let num_node_check = 0;
         // Callback function to execute when mutations are observed
         const callback = function (mutationsList, observer) {
           // console.log("First callback");
-          for (let item of mutationsList) {
+          for (const item of mutationsList) {
             num_node_check = LLS.mutationParser(item, num_node_check);
             //  console.log(num_node_check);
             if (num_node_check == LLS.node_check_time) {
@@ -166,7 +166,7 @@
   /// //////////////////设置(请注意开关的缩进关系..子开关一般在父开关为true的时候才会生效.)//////////////////////
   const userLang = navigator.language || navigator.userLanguage;
   // (Default settings)
-  var prefs = {
+  let prefs = {
     floatWindow: true, // 显示悬浮窗
     FW_position: 2, // 1:出现在左上角;2:出现在右上角;3：出现在右下角;4：出现在左下角;
     FW_offset: [20, 38], // 偏离版边的垂直和水平方向的数值..(单位:像素)
@@ -204,7 +204,7 @@
   /// ///////////////////////---------------规则-------////////////////
   // 高级规则的一些默认设置..如果你不知道是什么..请务必不要修改(删除)它.此修改会影响到所有高级规则...
   // (Default settings)
-  var SITEINFO_D = {
+  let SITEINFO_D = {
     enable: true, // 启用
     useiframe: false, // (预读)是否使用iframe..
     viewcontent: false, // 查看预读的内容,显示在页面的最下方.
@@ -259,7 +259,7 @@
 
   //  ///////// ----- Rules for specific sites -------///////////
   //  Highest priority
-  var SITEINFO = [
+  let SITEINFO = [
     {
       // 站点名字...(可选)             // 站点正则...(~~必须~~)
       name: 'Google搜索',
@@ -790,7 +790,7 @@
       url: /^https?:\/\/\w+\.blog\.hexun\.com\//i,
       exampleUrl: 'http://23802543.blog.hexun.com/',
       nextLink: function (doc) {
-        var url = doc.querySelector('.PageSkip_1 a[title="下一页"]').getAttribute('href');
+        let url = doc.querySelector('.PageSkip_1 a[title="下一页"]').getAttribute('href');
         url = url.replace(/(\/p\d+\/).*/, '$1default.html');
         return url;
       },
@@ -2728,9 +2728,9 @@
       url: /^https?:\/\/www\.(qidian)\.com(\/mm)?\/rank\/.*/i,
       siteExample: 'https://www.qidian.com/rank/collect',
       nextLink: function (doc, win, cplink) {
-        res = getElementByXpath('//div[@id="page-container"]', doc);
+        const res = getElementByXpath('//div[@id="page-container"]', doc);
 
-        if (res == null) {
+        if (res === null) {
           return undefined;
         }
 
@@ -3465,36 +3465,36 @@
       name: '优书-书单|评论',
       url: /^https?:\/\/www\.yousuu\.com\/(comments|booklist)/i,
       nextLink: function (doc, win, cplink) {
-        res = getElementByXpath('//ul[contains(@class, "pagination")]', doc);
-        if (res == null) {
+        const res = getElementByXpath('//ul[contains(@class, "pagination")]', doc);
+        if (res === null) {
           return undefined;
         }
 
-        var nextNode
+        let nextNode;
 
         if (res.childNodes.length == 2) {
           // 只有2个子节点，首页|下一页
-          nextNode = res.childNodes[1]
+          nextNode = res.childNodes[1];
         } else {
           // 其他类型 << 1 2(active) 3 ... >>
           // 找到active的后一项
-          for (var i = res.childNodes.length - 1; i >= 0; i--) {
+          for (let i = res.childNodes.length - 1; i >= 0; i--) {
             if (res.children[i].className == "active") {
               // 如果当前页是最后第二项，就不翻页
               if (i == res.childNodes.length - 2) {
                 return undefined;
               }
-              nextNode = res.childNodes[i+1]
+              nextNode = res.childNodes[i+1];
             }
           }
         }
 
-        findout = /jumpurl\('(\w+)','?(\d+)'?\)/.exec(nextNode.innerHTML)
-        if (findout == null || findout.length != 3) {
+        const findout = /jumpurl\('(\w+)','?(\d+)'?\)/.exec(nextNode.innerHTML);
+        if (findout === null || findout.length != 3) {
           return undefined;
         }
 
-        pageInfo = findout[1]+"="+findout[2]
+        const pageInfo = findout[1]+"="+findout[2];
 
         if (cplink.indexOf(findout[1]+"=") != -1) {
           return cplink.replace(new RegExp(findout[1]+"=\\d+"), pageInfo);
@@ -3684,11 +3684,11 @@
         const m = cplink.match(/(.*\d+\/)(\d+)(\.html\?s=\d+)((?:\?|&)d=.*)?/);
         const url_head = m[1];
         const current = Number(m[2]);
-        var dID = m[4];
+        let dID = m[4];
         if (!dID) dID = '&d=0';
         const next = current + 1;
         const xpath = '//div[@class="cH1"]/b[1]';
-        var maxpage = document.getElementById('hdPageCount');
+        let maxpage = document.getElementById('hdPageCount');
         if (maxpage) {
             maxpage = Number(maxpage.value);
         } else {
@@ -4573,7 +4573,7 @@
         if (!m) {
           return cplink + '/2/';
         } else {
-          var url = doc.querySelector('a[rel=next]').getAttribute('href');
+          let url = doc.querySelector('a[rel=next]').getAttribute('href');
           url = 'https://www.xkcd.com/' + url;
           return url;
         }
@@ -4798,7 +4798,7 @@
     }
   ];
 
-  var SITEINFO_json = [];
+  let SITEINFO_json = [];
   const jsonRule = {
     info: {
       expire: new Date(Date.now()-24*60*60*1000),
@@ -4808,13 +4808,13 @@
       // jsonFinish: a callback after jsonRules are updated
       // create promises
       const jsonRulePromises = [];
-      for (let provider of jsonRuleProvider){
+      for (const provider of jsonRuleProvider){
           jsonRulePromises.push(new Promise(function(resolve, reject){
             const req = {
               method: "GET",
               url: provider.url,
               onload: function(res) {
-                var rule;
+                let rule;
                 if (_.isFunction(provider.ruleParser)) {
                   rule = provider.ruleParser(res.responseText);
                 } else {
@@ -4894,7 +4894,7 @@
   // 当没有找到规则的时候,进入自动搜索模式.
   // 在没有高级规则的网站上.的一些设置..
   // (Default settings)
-  var autoMatch = {
+  let autoMatch = {
     keyMatch: true, // 是否启用关键字匹配
     cases: false, // 关键字区分大小写....
     digitalCheck: true, // 对数字连接进行检测,从中找出下一页的链接
@@ -4938,7 +4938,7 @@
   };
 
   // 上一页关键字
-  var prePageKey = [
+  let prePageKey = [
     '上一页', '上一頁', '上1页', '上1頁', '上页', '上頁',
     '翻上頁', '翻上页',
     '上一张', '上一張', '上一幅', '上一章', '上一节', '上一節', '上一篇',
@@ -4948,7 +4948,7 @@
   ];
 
   // 下一页关键字
-  var nextPageKey = [
+  let nextPageKey = [
     '下一页', '下一頁', '下1页', '下1頁', '下页', '下頁', '翻页', '翻頁', '翻下頁', '翻下页', '下一张', '下一張', '下一幅', '下一章', '下一节', '下一節', '下一篇', '前进', '下篇', '后页', '往后', 'Next', 'Next Page', '次へ', '次のページ',
     '下一页 →', '下一頁 →', '下1页 →', '下1頁 →', '下页 →', '下頁 →', '翻页 →', '翻頁 →', '翻下頁 →', '翻下页 →', '下一张 →', '下一張 →', '下一幅 →', '下一章 →', '下一节 →', '下一節 →', '下一篇 →', '前进 →', '下篇 →', '后页 →', '往后 →', 'Next →', 'Next Page →', '次へ →', '次のページ →',
     '下一页 »', '下一頁 »', '下1页 »', '下1頁 »', '下页 »', '下頁 »', '翻页 »', '翻頁 »', '翻下頁 »', '翻下页 »', '下一张 »', '下一張 »', '下一幅 »', '下一章 »', '下一节 »', '下一節 »', '下一篇 »', '前进 »', '下篇 »', '后页 »', '往后 »', 'Next »', 'Next Page »', '次へ »', '次のページ »', '后一页', '後一頁',
@@ -4988,10 +4988,10 @@
         GM.setValue("version",scriptInfo.version);
       }
 
-      var xbug = prefs.debug || false;
+      let xbug = prefs.debug || false;
       debug = xbug ? console.log.bind(console) : function () {};
       // 黑名单,网站正则..
-      var blackList = [
+      let blackList = [
         // 例子
         // 'http://*.douban.com/*',
       ];
@@ -5024,7 +5024,7 @@
                       #sp-prefs-setup button:disabled { color: graytext; }\
                   ');
 
-        var div = d.createElement('div');
+        let div = d.createElement('div');
         div.id = 'sp-prefs-setup';
         d.body.appendChild(div);
         if (isChineseUI()) {
@@ -5203,7 +5203,7 @@
           };
 
           const loadCustomSiteInfo = function () {
-            var infos;
+            let infos;
             try {
               infos = new Function('', 'return ' + prefs.custom_siteinfo)();
             } catch (e) {
@@ -5230,7 +5230,7 @@
 
         const nullFn = function () {}; // 空函数.
         const url = document.location.href.replace(/#.*$/, ''); // url 去掉hash
-        var cplink = url; // 翻上来的最近的页面的url;
+        let cplink = url; // 翻上来的最近的页面的url;
         const domain = document.domain; // 取得域名.
         const domain_port = url.match(/https?:\/\/([^\/]+)/)[1]; // 端口和域名,用来验证是否跨域.
 
@@ -5238,7 +5238,7 @@
         const remove = []; // 需要移除的事件
 
         // 悬浮窗
-        var floatWO = {
+        let floatWO = {
           updateColor: nullFn,
           loadedIcon: nullFn,
           CmodeIcon: nullFn
@@ -5433,7 +5433,7 @@
               spanel.style.display = 'none';
             }
           };
-          var rectt1, rectt2;
+          let rectt1, rectt2;
           // 设置面板显隐
           rect.addEventListener('mouseover', function (e) {
             rectt1 = setTimeout(spanelc.show, 100);
@@ -5485,7 +5485,7 @@
           const a_starti = $('sp-fw-a_starti'); // 开始立即翻页
           a_starti.addEventListener('click', function () {
             if (this.disabled) return;
-            var value = Number(a_ipages_1.value);
+            let value = Number(a_ipages_1.value);
             if (isNaN(value) || value <= 0) {
               value = SSS.a_ipages[1];
               a_ipages_1.value = value;
@@ -5631,7 +5631,7 @@
         }
 
         function floatWindowUI () {
-          var innerHTML = '';
+          let innerHTML = '';
           if (isChineseUI()) {
             innerHTML = '\
                                 <div id="sp-fw-rect" style="background-color:#000;">\
@@ -5768,14 +5768,14 @@
         }
 
         function sp_transition (start, end) {
-          var TweenF = sp_transition.TweenF;
+          let TweenF = sp_transition.TweenF;
           if (!TweenF) {
             TweenF = Tween[TweenM[prefs.s_method]];
             TweenF = TweenF[TweenEase[prefs.s_ease]] || TweenF;
             sp_transition.TweenF = TweenF;
           }
           const frameSpeed = 1000 / prefs.s_FPS;
-          var t = 0; // 次数,开始
+          let t = 0; // 次数,开始
           const b = start; // 开始
           const c = end - start; // 结束
           const d = Math.ceil(prefs.s_duration / frameSpeed); // 次数,结束
@@ -5802,7 +5802,7 @@
           // alert(target);
 
           function getRelativeDiv (which) {
-            var id = div.id;
+            let id = div.id;
             id = id.replace(/(sp-separator-)(.+)/, function (a, b, c) {
               return b + String((Number(c) + (which == 'pre' ? -1 : 1)));
             });
@@ -5819,7 +5819,7 @@
             }
           }
 
-          var o_scrollY, divS;
+          let o_scrollY, divS;
 
           switch (target.className) {
             case 'sp-sp-gotop':
@@ -5829,7 +5829,7 @@
               const prediv = getRelativeDiv('pre');
               if (!prediv) return;
               o_scrollY = window.scrollY;
-              var preDS = prediv.getBoundingClientRect().top;
+              let preDS = prediv.getBoundingClientRect().top;
               if (prefs.sepP) {
                 divS = div.getBoundingClientRect().top;
                 preDS = o_scrollY - (divS - preDS);
@@ -5843,7 +5843,7 @@
               const nextdiv = getRelativeDiv('next');
               if (!nextdiv) return;
               o_scrollY = window.scrollY;
-              var nextDS = nextdiv.getBoundingClientRect().top;
+              let nextDS = nextdiv.getBoundingClientRect().top;
               if (prefs.sepP) {
                 divS = div.getBoundingClientRect().top;
                 nextDS = o_scrollY + (-divS + nextDS);
@@ -5865,7 +5865,7 @@
         var autoPO = {
           startipages: nullFn
         };
-        var hashchangeAdded = false;
+        let hashchangeAdded = false;
 
         function autopager (SSS, floatWO) {
           // return;
@@ -5873,9 +5873,9 @@
           floatWO.updateColor('autopager');
 
           // 获取插入位置节点.
-          var insertPoint;
-          var pageElement;
-          var insertMode;
+          let insertPoint;
+          let pageElement;
+          let insertMode;
           if (SSS.a_HT_insert) {
             insertPoint = getElement(SSS.a_HT_insert[0]);
             insertMode = SSS.a_HT_insert[1];
@@ -5913,12 +5913,12 @@
             GM.addStyle(SSS.a_stylish, 'Super_preloader-style');
           }
 
-          var insertPointP;
+          let insertPointP;
           if (insertMode != 2) {
             insertPointP = insertPoint.parentNode;
           }
 
-          var addIntoDoc;
+          let addIntoDoc;
           if (insertMode == 2) {
             addIntoDoc = function (obj) {
               return insertPoint.appendChild(obj);
@@ -5929,7 +5929,7 @@
             };
           }
 
-          var doc, win;
+          let doc, win;
 
           function XHRLoaded (req) {
             const str = req.responseText;
@@ -5951,14 +5951,14 @@
             debug('移除各种事件监听');
             floatWO.updateColor('Astop');
             const _remove = remove;
-            for (var i = 0, ii = _remove.length; i < ii; i++) { // TODO: forEach()
+            for (let i = 0, ii = _remove.length; i < ii; i++) { // TODO: forEach()
               _remove[i]();
             }
 
             if (isRemoveAddPage) {
               const separator = document.querySelector('.sp-separator');
               if (separator) {
-                var insertBefore = insertPoint;
+                let insertBefore = insertPoint;
                 if (insertMode == 2) {
                   const l = insertPoint.children.length;
                   if (l > 0) {
@@ -5998,8 +5998,8 @@
             }, hashchangeTimer);
           }
 
-          var iframe;
-          var messageR;
+          let iframe;
+          let messageR;
 
           function iframeLoaded () {
             const iframe = this;
@@ -6109,10 +6109,10 @@
             }
           }
 
-          var ipagesmode = SSS.a_ipages[0];
-          var ipagesnumber = SSS.a_ipages[1];
-          var scrollDo = nullFn;
-          var afterInsertDo = nullFn;
+          let ipagesmode = SSS.a_ipages[0];
+          let ipagesnumber = SSS.a_ipages[1];
+          let scrollDo = nullFn;
+          let afterInsertDo = nullFn;
           if (prefs.Aplus) {
             afterInsertDo = doRequest;
             doRequest();
@@ -6121,7 +6121,7 @@
             if (ipagesmode) doRequest();
           }
 
-          var manualDiv;
+          let manualDiv;
 
           function manualAdiv () {
             if (!manualDiv) {
@@ -6186,7 +6186,7 @@
                 id: 'sp-sp-manualdiv'
               });
               manualDiv = div;
-              var nextStr = 'Next';
+              let nextStr = 'Next';
               if (isChineseUI()) {
                 nextStr = '下';
               }
@@ -6204,7 +6204,7 @@
               });
 
               const getInputValue = function () {
-                var value = Number(input.value);
+                let value = Number(input.value);
                 if (isNaN(value) || value < 1) {
                   value = 1;
                   input.value = 1;
@@ -6265,11 +6265,11 @@
             }
           }
 
-          var sepStyle;
+          let sepStyle;
           const goNextImg = [false];
           const sNumber = prefs.sepStartN;
           const _sep_icons = sep_icons;
-          var curNumber = sNumber;
+          let curNumber = sNumber;
 
           function createSep (lastUrl, currentUrl, nextUrl) {
             const div = document.createElement('div');
@@ -6334,7 +6334,7 @@
               div.className = 'sp-separator';
               div.id = 'sp-separator-' + curNumber;
               div.addEventListener('click', sepHandler, false);
-              var pageStr = '';
+              let pageStr = '';
               if (isChineseUI()) {
                 pageStr = '第 <span style="color:red!important;">' + curNumber + '</span> 页' +
                                     (SSS.a_separatorReal ? getRalativePageStr(lastUrl, currentUrl, nextUrl) : '');
@@ -6432,7 +6432,7 @@
             // 提前查找下一页链接，后面再赋值
             const lastUrl = cplink;
             cplink = nextlink;
-            var nl = getElement(SSS.nextLink, false, doc, win);
+            let nl = getElement(SSS.nextLink, false, doc, win);
             if (nl) {
               nl = getFullHref(nl);
               if (nl == nextlink) {
@@ -6444,20 +6444,19 @@
               nextlink = null;
             }
 
-            var i, pe_x, pe_x_nn;
-            for (let page of pageElements) {
-              pe_x_nn = page.nodeName;
+            for (const pe_x of pageElements) {
+              const pe_x_nn = pe_x.nodeName;
               if (pe_x_nn == 'BODY' || pe_x_nn == 'HTML' || pe_x_nn == 'SCRIPT') continue;
               fragment.appendChild(pe_x);
             }
 
             if (SSS.filter && typeof (SSS.filter) === 'string') { // 功能未完善.
               // alert(SSS.filter);
-              var nodes = [];
+              let nodes = [];
               try {
                 nodes = getAllElements(SSS.filter, fragment);
               } catch (e) {}
-              var nodes_x;
+              let nodes_x;
               for (i = nodes.length - 1; i >= 0; i--) {
                 nodes_x = nodes[i];
                 nodes_x.parentNode.removeChild(nodes_x);
@@ -6469,7 +6468,7 @@
               handleLazyImgSrc(SSS.lazyImgSrc, fragment);
             }
 
-            var imgs;
+            let imgs;
             if (!window.opera && SSS.a_useiframe && !SSS.a_iloaded) {
               imgs = getAllElements('css;img[src]', fragment); // 收集所有图片
             }
@@ -6488,12 +6487,12 @@
             const sepdiv = createSep(lastUrl, cplink, nextlink);
             if (pageElements[0] && pageElements[0].tagName == 'TR') {
               const insertParent = insertPoint.parentNode;
-              var colNodes = getAllElements('child::tr[1]/child::*[self::td or self::th]', insertParent);
+              let colNodes = getAllElements('child::tr[1]/child::*[self::td or self::th]', insertParent);
               if (colNodes.length == 0) {
                   colNodes = getAllElements('child::*[self::td or self::th]', pageElements[0]);
               }
-              var colums = 0;
-              for (let c of colNodes) {
+              let colums = 0;
+              for (const c of colNodes) {
                 const col = c.getAttribute('colspan');
                 colums += parseInt(col, 10) || 1;
               }
@@ -6522,8 +6521,10 @@
             if (imgs) { // 非opera,在iframeDOM取出数据时需要重载图片.
               setTimeout(function () {
                 const _imgs = imgs;
-                var i, ii, img;
-                for (let img of _imgs) {
+                let i;
+                let ii;
+                var img;
+                for (const img of _imgs) {
                   const src = img.src;
                   img.src = src;
                 }
@@ -6540,7 +6541,7 @@
                 const newE_lt = newE.length;
                 // alert(newE_lt);
                 if (newE_lt == oldE_lt) { // 替换
-                  var oldE_x, newE_x;
+                  let oldE_x, newE_x;
                   for (i = 0; i < newE_lt; i++) {
                     oldE_x = oldE[i];
                     newE_x = newE[i];
@@ -6604,7 +6605,7 @@
           }
 
           // 返回,剩余高度是总高度的比值.
-          var relatedObj_0, relatedObj_1;
+          let relatedObj_0, relatedObj_1;
           if (SSS.a_relatedObj) {
             if (_.isArray(SSS.a_relatedObj)) {
               relatedObj_0 = SSS.a_relatedObj[0];
@@ -6623,7 +6624,7 @@
             return (scrollH - scrolly - WI) / WI; // 剩余高度于页面总高度的比例.
           }
 
-          var pause = false;
+          let pause = false;
           if (prefs.pauseA) {
             const Sbutton = ['target', 'shiftKey', 'ctrlKey', 'altKey'];
             const ltype = prefs.mouseA ? 'mousedown' : 'dblclick';
@@ -6644,7 +6645,7 @@
               }
               scroll();
             };
-            var Sctimeout;
+            let Sctimeout;
 
             const clearPause = function () {
               clearTimeout(Sctimeout);
@@ -6682,7 +6683,7 @@
             }
           }
 
-          var timeout;
+          let timeout;
 
           function timeoutfn () {
             clearTimeout(timeout);
@@ -6800,11 +6801,11 @@
 
                 const images = doc.images;
                 const isl = images.length;
-                var img;
+                let img;
                 const iarray = [];
-                var i;
+                let i;
                 const existSRC = {};
-                var isrc;
+                let isrc;
                 for (i = isl - 1; i >= 0; i--) {
                   isrc = images[i].getAttribute('src');
                   if (!isrc || existSRC[isrc]) {
@@ -6863,7 +6864,7 @@
 
         // 重要的变量两枚.
         var nextlink;
-        var prelink;
+        let prelink;
         //= ==============
 
         let SSS = {};
@@ -6880,7 +6881,7 @@
               debug('Rules with ID > ', ii - SITEINFO_json.length, ' come from other source, ex: wedata.net');
           }
 
-          for (var i = 0; i < ii; i++) {
+          for (let i = 0; i < ii; i++) {
             const SII = SITEINFO[i];
             const Rurl = toRE(SII.url);
             if (Rurl.test(url)) {
@@ -7074,7 +7075,7 @@
         // 载入设置..
         const loadLocalSetting = function () {
           debug('加载设置');
-          var savedValue = getValue('spfwset');
+          let savedValue = getValue('spfwset');
           if (savedValue) {
             try {
               savedValue = eval(savedValue);
@@ -7084,11 +7085,11 @@
           }
           if (savedValue) {
             SSS.savedValue = savedValue;
-            var i, ii;
-            for (let savedValue_x of savedValue) {
+            let i, ii;
+            for (const savedValue_x of savedValue) {
               const savedValue_x = savedValue[i];
               if (savedValue_x.Rurl == SSS.Rurl) {
-                for (var ix in savedValue_x) {
+                for (const ix in savedValue_x) {
                   if (savedValue_x.hasOwnProperty(ix)) {
                     SSS[ix] = savedValue_x[ix]; // 加载键值.
                   }
@@ -7137,12 +7138,12 @@
           prefetcher(SSS, floatWO);
         }
 
-        var docChecked;
+        let docChecked;
 
         // 获取单个元素,混合
         function getElement (selector, contextNode, doc, win) {
           const _cplink = cplink;
-          var ret;
+          let ret;
           if (!selector) return ret;
           doc = doc || document;
           win = win || window;
@@ -7159,7 +7160,7 @@
           } else if (type == 'function') {
             ret = selector(doc, win, _cplink);
           } else if (selector instanceof Array) {
-            for (let s of selector) {
+            for (const s of selector) {
               ret = getElement(s, contextNode, doc, win);
               if (ret) {
                 break;
@@ -7200,8 +7201,8 @@
           const alllinksl = alllinks.length;
 
           const curLHref = cplink;
-          var _nextlink;
-          var _prelink;
+          let _nextlink;
+          let _prelink;
           if (!autoGetLink.checked) { // 第一次检查
             _nextlink = nextlink;
             _prelink = prelink;
@@ -7212,15 +7213,25 @@
           const DCEnable = autoMatch.digitalCheck;
           const DCRE = /^\s*\D{0,1}(\d+)\D{0,1}\s*$/;
 
-          var i, a, ahref, atext, numtext;
-          var aP; var initSD; var searchD = 1;
+          let i;
+          var a;
+          let ahref;
+          let atext;
+          let numtext;
+          let aP; let initSD; const searchD = 1;
 
-          var preS1; var preS2; var searchedD; var pSNText; var preSS; var nodeType;
-          var nextS1, nextS2, nSNText, nextSS;
-          var aimgs, j, jj, aimg_x, xbreak, k, keytext;
+          let preS1; let preS2; let searchedD; let pSNText; let preSS; let nodeType;
+          let nextS1, nextS2, nSNText, nextSS;
+          let aimgs;
+          let j;
+          let jj;
+          var aimg_x;
+          let xbreak;
+          let k;
+          let keytext;
 
           function finalCheck (a, type) {
-            var ahref = a.getAttribute('href'); // 在chrome上当是非当前页面文档对象的时候直接用a.href访问,不返回href
+            let ahref = a.getAttribute('href'); // 在chrome上当是非当前页面文档对象的时候直接用a.href访问,不返回href
             if (ahref == '#') {
               return null;
             }
@@ -7240,7 +7251,7 @@
             debug('全文档链接数量:', alllinksl);
           }
 
-          for (let a of alllinks) {
+          for (const a of alllinks) {
             if (_nextlink && _prelink) break;
             if (!a) continue; // undefined跳过
             // links集合返回的本来就是包含href的a元素..所以不用检测
@@ -7345,7 +7356,7 @@
             }
             if (!atext) {
               aimgs = a.getElementsByTagName('img');
-              for (let aimg_x of aimgs) {
+              for (const aimg_x of aimgs) {
                 atext = aimg_x.alt || aimg_x.title;
                 if (atext) break;
               }
@@ -7418,17 +7429,14 @@
             const RE_maxSubfix = sfwordl[name].maxSubfix;
 
             const RE_character_b = sfwordl[name].character;
-            var plwords,
-              slwords,
-              rep;
 
-            plwords = RE_maxPrefix > 0 ? ('[' + (RE_enable_a ? strMTE(RE_character_a.join('')) : '.') + ']{0,' + RE_maxPrefix + '}') : '';
+            let plwords = RE_maxPrefix > 0 ? ('[' + (RE_enable_a ? strMTE(RE_character_a.join('')) : '.') + ']{0,' + RE_maxPrefix + '}') : '';
             plwords = '^\\s*' + plwords;
             // alert(plwords);
-            slwords = RE_maxSubfix > 0 ? ('[' + (RE_enable_b ? strMTE(RE_character_b.join('')) : '.') + ']{0,' + RE_maxSubfix + '}') : '';
+            let slwords = RE_maxSubfix > 0 ? ('[' + (RE_enable_b ? strMTE(RE_character_b.join('')) : '.') + ']{0,' + RE_maxSubfix + '}') : '';
             slwords = slwords + '\\s*$';
             // alert(slwords);
-            rep = prefs.cases ? '' : 'i';
+            const rep = prefs.cases ? '' : 'i';
 
             const newPK = pageKey.map((pk) => RegExp(plwords + strMTE(pk) + slwords, rep));
             return newPK;
@@ -7456,9 +7464,9 @@
 
           const urlarray = url.split(/-|\.|\&|\/|=|#|\?/);
 
-          var url_info;
+          let url_info;
 
-          var lasturl_info;
+          let lasturl_info;
           // 一些 url_info 为 p1,p2,p3 之类的
           const handleInfo = function (s) {
             if (s) {
@@ -7478,10 +7486,10 @@
           return [0, 0];
         };
 
-        var ralativeOff;
+        let ralativeOff;
 
         // 论坛和搜索引擎网页显示实际页面信息
-        var ralativePageNumarray = [];
+        let ralativePageNumarray = [];
         if (nextUrl) {
           ralativePageNumarray = getRalativePageNumArray(currentUrl, nextUrl);
         } else {
@@ -7496,7 +7504,7 @@
           return '';
         }
 
-        var realPageSiteMatch = false;
+        let realPageSiteMatch = false;
         ralativeOff = ralativePageNumarray[1] - ralativePageNumarray[0];
         // 上一页与下一页差值为1，并最大数值不超过10000(一般论坛也不会超过这么多页……)
         if (ralativeOff === 1 && ralativePageNumarray[1] < 10000) {
@@ -7511,7 +7519,7 @@
         }
 
         if (!realPageSiteMatch) { // 不满足以上条件，再根据地址特征来匹配
-          for (let sitePattern of REALPAGE_SITE_PATTERN) {
+          for (const sitePattern of REALPAGE_SITE_PATTERN) {
             if (currentUrl.toLocaleLowerCase().indexOf(sitePattern) >= 0) {
               realPageSiteMatch = true;
               break;
@@ -7546,7 +7554,7 @@
 
   // ----------------------------------
 
-  var isUpdating = true;
+  let isUpdating = true;
 
   function checkUpdate (button) {
     if (isUpdating) {
@@ -7568,7 +7576,7 @@
       onload: function (response) {
         const txt = response.responseText;
         const curVersion = scriptInfo.version;
-        var latestVersion = txt.match(/@\s*version\s*([\d\.]+)\s*/i);
+        let latestVersion = txt.match(/@\s*version\s*([\d\.]+)\s*/i);
         if (latestVersion) {
           latestVersion = latestVersion[1];
         } else {
@@ -7577,14 +7585,14 @@
         }
 
         // 对比版本号
-        var needUpdate;
+        let needUpdate;
         const latestVersions = latestVersion.split('.');
         const lVLength = latestVersions.length;
         const currentVersion = curVersion.split('.');
         const cVLength = currentVersion.length;
-        var lV_x;
-        var cV_x;
-        for (var i = 0; i < lVLength; i++) {
+        let lV_x;
+        let cV_x;
+        for (let i = 0; i < lVLength; i++) {
           lV_x = Number(latestVersions[i]);
           cV_x = (i >= cVLength) ? 0 : Number(currentVersion[i]);
           if (lV_x > cV_x) {
@@ -7623,20 +7631,20 @@
   // ====================  libs  ==============================
   // 地址栏递增处理函数.
   function hrefInc (obj, doc, win, cplink) {
-    var _cplink = cplink;
+    let _cplink = cplink;
 
     function getHref (href) {
       const mFails = obj.mFails;
       if (!mFails) return href;
-      var str;
+      let str;
       if (typeof mFails === 'string') {
         str = mFails;
       } else {
         var fx;
         const array = [];
-        var i, ii;
-        var mValue;
-        for (let fx of mFails) {
+        let i, ii;
+        let mValue;
+        for (const fx of mFails) {
           if (!fx) continue;
           if (typeof fx === 'string') {
             array.push(fx);
@@ -7652,9 +7660,9 @@
     }
     // alert(getHref(_cplink))
 
-    var sa = obj.startAfter;
+    let sa = obj.startAfter;
     const saType = typeof sa;
-    var index;
+    let index;
 
     if (saType == 'string') {
       if (sa[0] == '#') {
@@ -7696,7 +7704,7 @@
     });
     // alert(aStr+nbStr);
     if (nbStr !== bStr) {
-      var ilresult;
+      let ilresult;
       try {
         ilresult = obj.isLast(doc, unsafeWindow, _cplink);
       } catch (e) {}
@@ -7732,7 +7740,7 @@
 
     // Return the first value which passes a truth test. Aliased as `detect`.
     _.find = function (obj, iterator, context) {
-      var result;
+      let result;
       obj.some(function (value, index, array) {
         if (iterator.call(context, value, index, array)) {
           result = value;
@@ -7845,7 +7853,7 @@
         if (t == 0) return b;
         if ((t /= d) == 1) return b + c;
         if (!p) p = d * 0.3;
-        var s;
+        let s;
         if (!a || a < Math.abs(c)) {
           a = c;
           s = p / 4;
@@ -7858,7 +7866,7 @@
         if (t == 0) return b;
         if ((t /= d) == 1) return b + c;
         if (!p) p = d * 0.3;
-        var s;
+        let s;
         if (!a || a < Math.abs(c)) {
           a = c;
           s = p / 4;
@@ -7871,7 +7879,7 @@
         if (t == 0) return b;
         if ((t /= d / 2) == 2) return b + c;
         if (!p) p = d * (0.3 * 1.5);
-        var s;
+        let s;
         if (!a || a < Math.abs(c)) {
           a = c;
           s = p / 4;
@@ -7957,16 +7965,16 @@
 
   function removeScripts (node) { // 移除元素的 script
     const scripts = getAllElements('css;script', node);
-    var scripts_x;
-    for (var i = scripts.length - 1; i >= 0; i--) {
+    let scripts_x;
+    for (let i = scripts.length - 1; i >= 0; i--) {
       scripts_x = scripts[i];
       scripts_x.parentNode.removeChild(scripts_x);
     }
   }
 
-  var noticeDiv;
-  var noticeDivto;
-  var noticeDivto2;
+  let noticeDiv;
+  let noticeDivto;
+  let noticeDivto2;
 
   function notice (html_txt) {
     if (!noticeDiv) {
@@ -8010,7 +8018,7 @@
 
   function $C (type, atArr, inner, action, listen) {
     const e = document.createElement(type);
-    for (var at in atArr) {
+    for (const at in atArr) {
       if (atArr.hasOwnProperty(at)) {
         e.setAttribute(at, atArr[at]);
       }
@@ -8058,7 +8066,7 @@
   function getAllElements (selector, contextNode, doc, win) {
     const ret = [];
     if (!selector) return ret;
-    var Eles;
+    let Eles;
     doc = doc || document;
     win = win || window;
     contextNode = contextNode || doc;
@@ -8083,9 +8091,9 @@
 
     function makeArray (x) {
       // TODO: better
-      var ret = [];
-      var i, ii;
-      var x_x;
+      let ret = [];
+      let i, ii;
+      let x_x;
       if (x.pop) { // 普通的 array
         for (i = 0, ii = x.length; i < ii; i++) {
           x_x = x[i];
@@ -8154,7 +8162,7 @@
       return new DOMParser().parseFromString(str, 'application/xhtml+xml');
     }
 
-    var doc;
+    let doc;
     try {
       // firefox and chrome 30+，Opera 12 会报错
       doc = new DOMParser().parseFromString(str, 'text/html');
@@ -8202,7 +8210,7 @@
     if (typeof href !== 'string') href = href.getAttribute('href');
     // alert(href);
     // if(href.search(/^https?:/)==0)return href;//http打头,不一定就是完整的href;
-    var a = getFullHref.a;
+    let a = getFullHref.a;
     if (!a) {
       getFullHref.a = a = document.createElement('a');
     }
@@ -8222,9 +8230,9 @@
         case 'number':
           return Str(x);
         case 'string':
-          return ('"' +
+          return '"' +
                         (x.replace(/(?:\r\n|\n|\r|\t|\\|\")/g, function (a) {
-                          var ret;
+                          let ret;
                           switch (a) { // 转成字面量
                             case '\r\n':
                               ret = '\\r\\n';
@@ -8248,7 +8256,7 @@
                               break;
                           }
                           return ret;
-                        })) + '"');
+                        })) + '"';
         case 'function': {
           const fnStr = Str(x);
           return fnStr.indexOf('native code') == -1 ? fnStr : 'function(){}';
@@ -8258,8 +8266,8 @@
           if (x === null) {
             return Str(x);
           }
-          var rStr = '';
-          var i;
+          let rStr = '';
+          let i;
           switch (x.constructor.name) {
             case 'Object':
               for (i in x) {
@@ -8321,10 +8329,10 @@
 
   //Function to compare two version strings https://gist.github.com/TheDistantSea/8021359
   function versionCompare(v1, v2, options) {
-    var lexicographical = options && options.lexicographical,
-        zeroExtend = options && options.zeroExtend,
-        v1parts = v1.split('.'),
-        v2parts = v2.split('.');
+    const lexicographical = options && options.lexicographical;
+    const zeroExtend = options && options.zeroExtend;
+    let v1parts = v1.split('.');
+    let v2parts = v2.split('.');
 
     function isValidPart(x) {
         return (lexicographical ? /^\d+[A-Za-z]*$/ : /^\d+$/).test(x);
@@ -8344,7 +8352,7 @@
         v2parts = v2parts.map(Number);
     }
 
-    for (var i = 0; i < v1parts.length; ++i) {
+    for (let i = 0; i < v1parts.length; ++i) {
         if (v2parts.length == i) {
             return 1;
         }

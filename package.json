@@ -22,7 +22,10 @@
     "url": "https://github.com/machsix/Super-preloader/issues"
   },
   "homepage": "https://github.com/machsix/Super-preloader#readme",
-  "devDependencies": {},
+  "devDependencies": {
+    "eslint": "^5.15.1",
+    "eslint-plugin-compat": "^2.7.0"
+  },
   "browserslist": [
     "Chrome > 32 or Firefox > 36"
   ],
