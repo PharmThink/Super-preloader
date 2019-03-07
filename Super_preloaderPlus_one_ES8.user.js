@@ -7513,7 +7513,7 @@
 
   let isUpdating = true;
 
-  function checkUpdate (button) {
+  function checkUpdate (button) { // Deprecated?
     if (isUpdating) return;
 
     button.innerHTML = '正在更新中...';
@@ -8175,11 +8175,11 @@
       let rStr = '';
       switch (typeof x) {
       case 'undefined':
-        return Str(x);
+        return String(x);
       case 'boolean':
-        return Str(x);
+        return String(x);
       case 'number':
-        return Str(x);
+        return String(x);
       case 'string':
         return '"' +
                         (x.replace(/(?:\r\n|\n|\r|\t|\\|\")/g, (a) => {
@@ -8209,13 +8209,13 @@
                           return ret;
                         })) + '"';
       case 'function': {
-        const fnStr = Str(x);
+        const fnStr = String(x);
         return fnStr.indexOf('native code') === -1 ? fnStr : 'function(){}';
       }
       case 'object':
         // 注,object的除了单纯{},其他的对象的属性会造成丢失..
         if (x === null) {
-          return Str(x);
+          return String(x);
         }
         switch (x.constructor.name) {
         case 'Object':
@@ -8235,13 +8235,13 @@
           }
           return '[' + rStr.replace(/,$/i, '') + ']';
         case 'String':
-          return toStr(Str(x));
+          return toStr(String(x));
         case 'RegExp':
-          return Str(x);
+          return String(x);
         case 'Number':
-          return Str(x);
+          return String(x);
         case 'Boolean':
-          return Str(x);
+          return String(x);
         default:
           // alert(x.constructor);//漏了什么类型么?
           break;
@@ -8251,7 +8251,6 @@
         break;
       }
     }
-    const Str = String;
     return toStr(x);
   }
 
