@@ -6175,7 +6175,7 @@
                     }\
                 ');
 
-              const div = $C('div', {
+              const div = $crEl('div', {
                 id: 'sp-sp-manualdiv'
               });
               manualDiv = div;
@@ -6183,12 +6183,12 @@
               if (isChineseUI()) {
                 nextStr = '下';
               }
-              const span = $C('span', {
+              const span = $crEl('span', {
                 class: 'sp-sp-md-span'
               }, nextStr);
               div.appendChild(span);
 
-              const input = $C('input', {
+              const input = $crEl('input', {
                 type: 'number',
                 value: 1,
                 min: 1,
@@ -6222,19 +6222,19 @@
               }, false);
               div.appendChild(input);
               if (isChineseUI()) {
-                div.appendChild($C('span', {
+                div.appendChild($crEl('span', {
                   className: 'sp-sp-md-span'
                 }, '页'));
               } else {
-                div.appendChild($C('span', {
+                div.appendChild($crEl('span', {
                   className: 'sp-sp-md-span'
                 }, 'page'));
               }
-              div.appendChild($C('img', {
+              div.appendChild($crEl('img', {
                 id: 'sp-sp-md-imgnext',
                 src: _sep_icons.next
               }));
-              div.appendChild($C('span', {
+              div.appendChild($crEl('span', {
                 id: 'sp-sp-md-someinfo'
               }, prefs.someValue));
               document.body.appendChild(div);
@@ -6335,26 +6335,26 @@
                 pageStr = 'Page <span style="color:red!important;">' + curNumber + '</span>' +
                                     (SSS.a_separatorReal ? getRalativePageStr(lastUrl, currentUrl, nextUrl) : '');
               }
-              div.appendChild($C('a', {
+              div.appendChild($crEl('a', {
                 class: 'sp-sp-nextlink',
                 href: currentUrl,
                 title: currentUrl
               }, pageStr));
 
-              div.appendChild($C('img', {
+              div.appendChild($crEl('img', {
                 src: _sep_icons.top,
                 class: 'sp-sp-gotop',
                 alt: '去到顶部',
                 title: '去到顶部'
               }));
 
-              div.appendChild($C('img', {
+              div.appendChild($crEl('img', {
                 src: curNumber == sNumber ? _sep_icons.pre_gray : _sep_icons.pre,
                 class: 'sp-sp-gopre',
                 title: '上滚一页'
               }));
 
-              const i_next = $C('img', {
+              const i_next = $crEl('img', {
                 src: _sep_icons.next_gray,
                 class: 'sp-sp-gonext',
                 title: '下滚一页'
@@ -6366,14 +6366,14 @@
               goNextImg.push(i_next);
               div.appendChild(i_next);
 
-              div.appendChild($C('img', {
+              div.appendChild($crEl('img', {
                 src: _sep_icons.bottom,
                 class: 'sp-sp-gobottom',
                 alt: '去到底部',
                 title: '去到底部'
               }));
 
-              div.appendChild($C('span', {
+              div.appendChild($crEl('span', {
                 class: 'sp-span-someinfo'
               }, prefs.someValue));
               curNumber += 1;
@@ -7967,7 +7967,7 @@
     }, 2000);
   }
 
-  function $C (type, atArr, inner, action, listen) {
+  function $crEl (type, atArr, inner, action, listen) {
     const e = document.createElement(type);
     for (const at in atArr) {
       if (atArr.hasOwnProperty(at)) {
