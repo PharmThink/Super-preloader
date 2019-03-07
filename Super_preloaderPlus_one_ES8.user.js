@@ -100,7 +100,7 @@
       if (mutation.type == 'childList') {
         if (mutation.addedNodes) {
           for (const node of mutation.addedNodes) {
-            if (node.className.indexOf('photo-view') != -1) {
+            if (node.className.indexOf('photo-view') !== -1) {
               ncheck = ncheck + 1;
               break;
             }
@@ -1518,7 +1518,7 @@
         replaceE: 'css;.pages',
         documentFilter: function (doc) {
           // 头像载入出错的修正
-          [].forEach.call(doc.querySelectorAll('img.J_avatar'), function (img) {
+          [].forEach.call(doc.querySelectorAll('img.J_avatar'), (img) => {
             img.setAttribute('onerror', 'this.src="http://www.firefox.net.cn/res/images/face/face_small.jpg";');
           });
         }
@@ -2322,7 +2322,7 @@
           const next = current + 1;
           const url = cplink.replace(m[1] + '.html', next + '.html');
           const url2 = doc.querySelector('a.next').getAttribute('href');
-          if (url != url2) { return undefined; } else { return url; }
+          if (url !== url2) { return undefined; } else { return url; }
         }
       },
       autopager: {
@@ -2611,19 +2611,19 @@
       exampleUrl: 'https://www.laomoit.com',
       nextLink: '//div[@id="pagenavi"]//a[text()="下一页"]',
       autopager:{
-          pageElement:'id("post") | id("content")',
-          replaceE: 'css;#pagenavi',
-          // 删除页面上不需要的元素
-          documentFilter: function(doc){
-              const nodeBrowse = doc.querySelector(".browse");
-              if (nodeBrowse) {
-                  nodeBrowse.parentNode.removeChild(nodeBrowse);
-              }
-              const nodeMap = doc.querySelector("#map");
-              if (nodeMap) {
-                  nodeMap.parentNode.removeChild(nodeMap);
-              }
-          },
+        pageElement:'id("post") | id("content")',
+        replaceE: 'css;#pagenavi',
+        // 删除页面上不需要的元素
+        documentFilter: function(doc){
+          const nodeBrowse = doc.querySelector(".browse");
+          if (nodeBrowse) {
+            nodeBrowse.parentNode.removeChild(nodeBrowse);
+          }
+          const nodeMap = doc.querySelector("#map");
+          if (nodeMap) {
+            nodeMap.parentNode.removeChild(nodeMap);
+          }
+        },
       },
     },
     // ========================= dev =================================
@@ -2739,9 +2739,9 @@
         if (next > res.dataset.pagemax) {
           return undefined;
         } else {
-          if (cplink.indexOf("page=") != -1) {
+          if (cplink.indexOf("page=") !== -1) {
             return cplink.replace(/page=\d+/, 'page=' + next);
-          } else if (cplink.indexOf("?") != -1) {
+          } else if (cplink.indexOf("?") !== -1) {
             return cplink + "&page="+next;
           } else {
             return cplink + "?page="+next;
@@ -3479,9 +3479,9 @@
           // 其他类型 << 1 2(active) 3 ... >>
           // 找到active的后一项
           for (let i = res.childNodes.length - 1; i >= 0; i--) {
-            if (res.children[i].className == "active") {
+            if (res.children[i].className === "active") {
               // 如果当前页是最后第二项，就不翻页
-              if (i == res.childNodes.length - 2) {
+              if (i === res.childNodes.length - 2) {
                 return undefined;
               }
               nextNode = res.childNodes[i+1];
@@ -3490,15 +3490,15 @@
         }
 
         const findout = /jumpurl\('(\w+)','?(\d+)'?\)/.exec(nextNode.innerHTML);
-        if (findout === null || findout.length != 3) {
+        if (findout === null || findout.length !== 3) {
           return undefined;
         }
 
         const pageInfo = findout[1]+"="+findout[2];
 
-        if (cplink.indexOf(findout[1]+"=") != -1) {
+        if (cplink.indexOf(findout[1]+"=") !== -1) {
           return cplink.replace(new RegExp(findout[1]+"=\\d+"), pageInfo);
-        } else if (cplink.indexOf("?") != -1) {
+        } else if (cplink.indexOf("?") !== -1) {
           return cplink + "&"+pageInfo;
         } else {
           return cplink + "?"+pageInfo;
@@ -3641,7 +3641,7 @@
         isLast: function (doc, win, lhref) {
           const TotalPage = Number(doc.getElementById('TotalPage').innerText)-1;
           const CurrentPage = Number(doc.getElementById('CurrentPage').innerText);
-          if (CurrentPage == TotalPage) {
+          if (CurrentPage === TotalPage) {
             return true;
           }
         }
@@ -3666,7 +3666,7 @@
           if (select) {
             const s2os = select.options;
             const s2osl = s2os.length;
-            if (select.selectedIndex == s2osl - 1) return true;
+            if (select.selectedIndex === s2osl - 1) return true;
           }
         }
       },
@@ -3690,12 +3690,12 @@
         const xpath = '//div[@class="cH1"]/b[1]';
         let maxpage = document.getElementById('hdPageCount');
         if (maxpage) {
-            maxpage = Number(maxpage.value);
+          maxpage = Number(maxpage.value);
         } else {
-            maxpage = document.getElementById('spPageCount');
-            if (maxpage) { maxpage = Number(maxpage.innerText); } else { return undefined; }
+          maxpage = document.getElementById('spPageCount');
+          if (maxpage) { maxpage = Number(maxpage.innerText); } else { return undefined; }
         }
-        if (next == maxpage+1) { return undefined; } else { return m[1] + next + m[3] + dID; }
+        if (next === maxpage+1) { return undefined; } else { return m[1] + next + m[3] + dID; }
       },
       autopager: {
         useiframe: true,
@@ -4658,7 +4658,7 @@
         documentFilter: function (doc) {
           // 卡饭论坛的下一页代码区域可能无法着色，所以手动修改并添加样式
           const pres = doc.querySelectorAll('pre[class^="brush:"]');
-          [].forEach.call(pres, function (pre) {
+          pres.forEach((pre) => {
             pre.classList.add('mbbs_code');
           });
         }
@@ -4787,13 +4787,11 @@
       name: 'wedata.net',
       url: 'http://wedata.net/databases/AutoPagerize/items.json',
       ruleParser: function(responseText){
-          return JSON.parse(responseText).filter(function(i) {
-              return (!(i.name === 'Generic Posts Rule'));
-            }).map(function(i) {
-                i.data.name = i.name;
-                i.data.source = 'wedata.net';
-                return i.data;
-            });
+        return JSON.parse(responseText).filter((x) => x.name !== 'Generic Posts Rule').map((i) => {
+          i.data.name = i.name;
+          i.data.source = 'wedata.net';
+          return i.data;
+        });
       }
     }
   ];
@@ -4803,63 +4801,61 @@
     info: {
       expire: new Date(Date.now()-24*60*60*1000),
       updatePeriodInDay: 1, // json rules are update everyday
+      lastUpdate: false
     },
-    updateRule: function(jsonFinish){
-      // jsonFinish: a callback after jsonRules are updated
+    updateRule: async () => {
       // create promises
       const jsonRulePromises = [];
       for (const provider of jsonRuleProvider){
-          jsonRulePromises.push(new Promise(function(resolve, reject){
-            const req = {
-              method: "GET",
-              url: provider.url,
-              onload: function(res) {
-                let rule;
-                if (_.isFunction(provider.ruleParser)) {
-                  rule = provider.ruleParser(res.responseText);
-                } else {
-                  rule = JSON.parse(res.responseText);
-                }
-                debug('Rules from' + provider.name + ' is updated');
-                resolve(rule);
-              },
-              onerror: function(res) {console.log(provider.url, 'error');}
-            };
-            GM.xmlHttpRequest(req);
-          }));
+        jsonRulePromises.push(new Promise((resolve, reject) => {
+          const req = {
+            method: "GET",
+            url: provider.url,
+            onload: function(res) {
+              let rule;
+              if (_.isFunction(provider.ruleParser)) {
+                rule = provider.ruleParser(res.responseText);
+              } else {
+                rule = JSON.parse(res.responseText);
+              }
+              debug('Rules from' + provider.name + ' is updated');
+              resolve(rule);
+            },
+            onerror: function(res) {console.log(provider.url, 'error');}
+          };
+          GM.xmlHttpRequest(req);
+        }));
       }
-      Promise.all(jsonRulePromises).then(
-        function(jsons){
-          SITEINFO_json = _.flat(jsons);
-          // debug(SITEINFO_json);
-          jsonFinish(); // a callback after rules are updated
-        },
-        function(rejreason){
-          console.log('Fail to update json rule because:');
-          console.log(rejreason);
-          SITEINFO_json = [];
-          jsonFinish();
-        }
-      );
+
+      try {
+        const jsons = await Promise.all(jsonRulePromises);
+        return Promise.resolve(_.flat(jsons));
+      }
+      catch (rejreason) {
+        console.log('Fail to update json rule because:');
+        console.log(rejreason);
+        return Promise.resolve([]);
+      }
     },
-    updateJsonRule: function(jsonUpdateFinish, reject, force){
+    updateJsonRule: async function(force){
       // a function used to create promise to update json rule
       // jsonUpdateFinish: Callback after both jsonInfo and SITEINFO_json are updated
-        force = force || false;
-        const currentDate = new Date();
-        const jsonFinish = function(){
+      const _force = force || false;
+      const currentDate = new Date();
+      if ( this.info.expire < currentDate || SITEINFO_json.length === 0 || _force){
+        debug('Json rule is being updated');
+        try {
+          SITEINFO_json = await this.updateRule();
           this.info.expire = new Date(currentDate.getTime() + this.info.updatePeriodInDay*24*60*60*1000);
-          GM.setValue('jsonRuleInfo', JSON.stringify(this.info));
+          this.info.lastUpdate = true;   //success
           GM.setValue('SITEINFO_json', JSON.stringify(SITEINFO_json));
-          jsonUpdateFinish();
-        }.bind(this);
-        if ( this.info.expire < currentDate || SITEINFO_json.length == 0 || force){
-          debug('Json rule is being updated');
-          this.updateRule(jsonFinish);
-        } else {
-          // debug('Json rule will be updated at '+this.info.expire.toString());
-          jsonUpdateFinish();
         }
+        catch (e) {
+          this.info.lastUpdate = false; //fail
+        }
+        GM.setValue('jsonRuleInfo', JSON.stringify(this.info));
+        return Promise.resolve(this.info.lastUpdate);
+      }
     },
     parseJsonInfo: function(x) {
       // Parse the json saved for this.info
@@ -4963,7 +4959,7 @@
   // ------------------------下面的不要管他-----------------
   /// ////////////////////////////////////////////////////////////////
   function isChineseUI() {
-    return (userLang.indexOf('zh') !== -1) || prefs.ChineseUI;
+    return userLang.indexOf('zh') !== -1 || prefs.ChineseUI;
   }
 
   Promise.all([
@@ -4974,7 +4970,7 @@
     GM.getValue('SITEINFO_json', JSON.stringify(SITEINFO_json)),
     GM.getValue('version', '1.0.00')
   ]).then(
-    function (values) {
+    (values) => {
       // retrieve settings
       prefs = JSON.parse(values[0]);
       SITEINFO_D = JSON.parse(values[1]);
@@ -4985,7 +4981,7 @@
       const myVersion = values[5];
       if (versionCompare(myVersion, scriptInfo.version)<0) {
         jsonRule.info.expire = new Date(Date.now()-24*60*60*1000);
-        GM.setValue("version",scriptInfo.version);
+        GM.setValue("version", scriptInfo.version);
       }
 
       let xbug = prefs.debug || false;
@@ -4995,19 +4991,17 @@
         // 例子
         // 'http://*.douban.com/*',
       ];
-      blackList = blackList.concat(prefs.excludes.split(/[\n\r]+/).map(function (line) {
-        return line.trim();
-      }));
+      blackList = blackList.concat(prefs.excludes.split(/[\n\r]+/).map((line) => line.trim()));
       const setup = function () {
         const d = document;
         const on = function (node, e, f) {
           node.addEventListener(e, f, false);
         };
 
-        const $ = function (s) {
+        const $perfsId = function (s) {
           return d.getElementById('sp-prefs-' + s);
         };
-        if ($('setup')) return;
+        if ($perfsId('setup')) return;
 
         const styleNode = GM.addStyle('\
                       #sp-prefs-setup { position:fixed;z-index:2147483647;top:30px;right:60px;padding:20px 30px;background:#eee;width:500px;border:1px solid black;\
@@ -5082,27 +5076,32 @@
         }
         div = null;
 
-        const close = function () {
-          if (styleNode) {
-            styleNode.parentNode.removeChild(styleNode);
+        const close = async function () {
+          let realStyleNode;
+          if (typeof styleNode.then == "function") { // https://github.com/violentmonkey/violentmonkey/issues/217
+            realStyleNode = await styleNode;
           }
-          const div = $('setup');
+          const s = realStyleNode || styleNode;
+          if (s) {
+            s.parentNode.removeChild(s);
+          }
+          const div = $perfsId('setup');
           div.parentNode.removeChild(div);
         };
 
-        on($('ok'), 'click', function () {
-          prefs.ChineseUI = !!$('ChineseUI').checked;
+        on($perfsId('ok'), 'click', () => {
+          prefs.ChineseUI = !!$perfsId('ChineseUI').checked;
           // document.getElementById('sp-fw-container').innerHTML = floatWindowUI();
-          prefs.custom_siteinfo = $('custom_siteinfo').value;
-          prefs.debug = xbug = !!$('debug').checked;
-          prefs.dblclick_pause = !!$('dblclick_pause').checked;
-          prefs.enableHistory = !!$('enableHistory').checked;
-          prefs.excludes = $('excludes').value;
-          prefs.forceTargetWindow = !!$('forceTargetWindow').checked;
+          prefs.custom_siteinfo = $perfsId('custom_siteinfo').value;
+          prefs.debug = xbug = !!$perfsId('debug').checked;
+          prefs.dblclick_pause = !!$perfsId('dblclick_pause').checked;
+          prefs.enableHistory = !!$perfsId('enableHistory').checked;
+          prefs.excludes = $perfsId('excludes').value;
+          prefs.forceTargetWindow = !!$perfsId('forceTargetWindow').checked;
 
-          SITEINFO_D.useiframe = !!$('SITEINFO_D-useiframe').checked;
-          SITEINFO_D.autopager.enable = !!$('SITEINFO_D-a_enable').checked;
-          SITEINFO_D.autopager.force_enable = !!$('SITEINFO_D-a_force_enable').checked;
+          SITEINFO_D.useiframe = !!$perfsId('SITEINFO_D-useiframe').checked;
+          SITEINFO_D.autopager.enable = !!$perfsId('SITEINFO_D-a_enable').checked;
+          SITEINFO_D.autopager.force_enable = !!$perfsId('SITEINFO_D-a_force_enable').checked;
 
           autoMatch.useiframe = SITEINFO_D.useiframe;
 
@@ -5110,7 +5109,7 @@
             GM.setValue('prefs', JSON.stringify(prefs)),
             GM.setValue('SITEINFO_D', JSON.stringify(SITEINFO_D)),
             GM.setValue('autoMatch', JSON.stringify(autoMatch))
-          ]).then(function (values) {
+          ]).then(() => {
             debug = xbug ? console.log.bind(console) : function () {};
             SP.loadSetting();
             close();
@@ -5118,37 +5117,32 @@
           });
         });
 
-        on($('updaterule'), 'click', function(){
-            $('updaterule').innerHTML = "Updating...";
-            const p = new Promise(function(resolve, reject) {
-                jsonRule.updateJsonRule(resolve, reject, true);});
-            p.then(function(values){
-                SP.loadSetting();
-                close();
-                location.reload();
-            });
+        on($perfsId('updaterule'), 'click', async () => {
+          $perfsId('updaterule').innerHTML = "Updating...";
+          await jsonRule.updateJsonRule(true);
+          SP.loadSetting();
+          close();
+          location.reload();
         });
 
-        on($('cancel'), 'click', close);
+        on($perfsId('cancel'), 'click', close);
 
-        $('debug').checked = xbug;
-        $('ChineseUI').checked = prefs.ChineseUI;
-        $('enableHistory').checked = prefs.enableHistory;
-        $('forceTargetWindow').checked = prefs.forceTargetWindow;
-        $('dblclick_pause').checked = prefs.dblclick_pause;
-        $('SITEINFO_D-useiframe').checked = SITEINFO_D.useiframe;
-        $('SITEINFO_D-a_enable').checked = SITEINFO_D.autopager.enable;
-        $('SITEINFO_D-a_force_enable').checked = SITEINFO_D.autopager.force_enable;
-        $('excludes').value = prefs.excludes;
-        $('custom_siteinfo').value = prefs.custom_siteinfo;
+        $perfsId('debug').checked = xbug;
+        $perfsId('ChineseUI').checked = prefs.ChineseUI;
+        $perfsId('enableHistory').checked = prefs.enableHistory;
+        $perfsId('forceTargetWindow').checked = prefs.forceTargetWindow;
+        $perfsId('dblclick_pause').checked = prefs.dblclick_pause;
+        $perfsId('SITEINFO_D-useiframe').checked = SITEINFO_D.useiframe;
+        $perfsId('SITEINFO_D-a_enable').checked = SITEINFO_D.autopager.enable;
+        $perfsId('SITEINFO_D-a_force_enable').checked = SITEINFO_D.autopager.force_enable;
+        $perfsId('excludes').value = prefs.excludes;
+        $perfsId('custom_siteinfo').value = prefs.custom_siteinfo;
       };
 
       // main functions
       const SP = {
         spinit: function () {
-          if (document.body.getAttribute('name') === 'MyNovelReader') {
-            return;
-          }
+          if (document.body.getAttribute('name') === 'MyNovelReader') {return;}
 
           this.loadSetting();
 
@@ -5160,23 +5154,19 @@
 
           // 查找是否是页面不刷新的站点
           const locationHref = location.href;
-          const hashSite = _.find(HashchangeSites, function (x) {
-            return toRE(x.url).test(locationHref);
-          });
+          const hashSite = _.find(HashchangeSites, x => toRE(x.url).test(locationHref));
 
-          const p2 = new Promise(function(resolve, reject) {
-            jsonRule.updateJsonRule(resolve, reject);});
+          const p_updateJsonRule = jsonRule.updateJsonRule();
           if (hashSite) {
             isHashchangeSite = true;
             hashchangeTimer = hashSite.timer;
             debug('当前是页面不刷新的站点', hashSite);
-            const p1 = new Promise(function(resolve, reject){
-              setTimeout(resolve, hashchangeTimer);});
-            Promise.all([p1, p2]).then(function(values){
-              init(window, document);
+            const p_checkhash = new Promise((resolve, reject) => {
+              setTimeout(resolve, hashchangeTimer);
             });
+            Promise.all([p_checkhash, p_updateJsonRule]).then(() => init(window, document));
           } else {
-            p2.then(function(values) {
+            p_updateJsonRule.then((values) => {
               init(window, document);
             });
           }
@@ -5193,13 +5183,14 @@
           }
 
           const loadDblclickPause = function (reload) {
-            const dblclickPause = prefs.dblclick_pause;
-            if (dblclickPause) {
+            if (prefs.dblclick_pause) {
               prefs.mouseA = false;
               prefs.Pbutton = [0, 0, 0];
             }
 
-            if (reload) location.reload();
+            if (reload) {
+              location.reload();
+            }
           };
 
           const loadCustomSiteInfo = function () {
@@ -5418,12 +5409,12 @@
           div.innerHTML = floatWindowUI();
           document.body.appendChild(div);
 
-          function $ (id) {
+          function $id (id) {
             return document.getElementById(id);
           }
 
-          const rect = $('sp-fw-rect'); // 悬浮窗的小正方形,用颜色描述当前的状态.
-          const spanel = $('sp-fw-content'); // 设置面板.
+          const rect = $id('sp-fw-rect'); // 悬浮窗的小正方形,用颜色描述当前的状态.
+          const spanel = $id('sp-fw-content'); // 设置面板.
 
           const spanelc = {
             show: function () {
@@ -5435,54 +5426,56 @@
           };
           let rectt1, rectt2;
           // 设置面板显隐
-          rect.addEventListener('mouseover', function (e) {
+          rect.addEventListener('mouseover', () => {
             rectt1 = setTimeout(spanelc.show, 100);
           }, false);
-          rect.addEventListener('mouseout', function (e) {
+          rect.addEventListener('mouseout', () => {
             clearTimeout(rectt1);
           }, false);
 
-          div.addEventListener('mouseover', function (e) {
+          div.addEventListener('mouseover', () => {
             clearTimeout(rectt2);
           }, false);
 
-          div.addEventListener('mouseout', function (e) {
-            if (e.relatedTarget && e.relatedTarget.disabled) return; // for firefox and chrome
+          div.addEventListener('mouseout', (e) => {
+            if (e.relatedTarget && e.relatedTarget.disabled) {
+              return; // for firefox and chrome
+            }
             rectt2 = setTimeout(spanelc.hide, 288);
           }, false);
 
-          const dot = $('sp-fw-dot'); // 载入完成后,显示的小点
+          const dot = $id('sp-fw-dot'); // 载入完成后,显示的小点
           dot.style.backgroundColor = FWKG_color.dot;
 
-          const cur_mode = $('sp-fw-cur-mode'); // 当载入状态时,用来描述当前是翻页模式,还是预读模式.
+          const cur_mode = $id('sp-fw-cur-mode'); // 当载入状态时,用来描述当前是翻页模式,还是预读模式.
           cur_mode.style.backgroundColor = SSS.a_enable ? FWKG_color.autopager : FWKG_color.prefetcher;
 
-          const a_enable = $('sp-fw-a_enable'); // 启用翻页模式
-          const autopager_field = $('sp-fw-autopager-field'); // 翻页设置区域
+          const a_enable = $id('sp-fw-a_enable'); // 启用翻页模式
+          const autopager_field = $id('sp-fw-autopager-field'); // 翻页设置区域
 
           // 预读设置
-          const useiframe = $('sp-fw-useiframe');
-          const viewcontent = $('sp-fw-viewcontent');
+          const useiframe = $id('sp-fw-useiframe');
+          const viewcontent = $id('sp-fw-viewcontent');
 
           // 翻页设置
-          const a_useiframe = $('sp-fw-a_useiframe');
-          const a_iloaded = $('sp-fw-a_iloaded');
-          const a_itimeout = $('sp-fw-a_itimeout');
-          const a_manualA = $('sp-fw-a_manualA');
-          const a_remain = $('sp-fw-a_remain');
-          const a_maxpage = $('sp-fw-a_maxpage');
-          const a_separator = $('sp-fw-a_separator');
-          const a_ipages_0 = $('sp-fw-a_ipages_0');
-          const a_ipages_1 = $('sp-fw-a_ipages_1');
-          const a_force = $('sp-fw-a_force');
+          const a_useiframe = $id('sp-fw-a_useiframe');
+          const a_iloaded = $id('sp-fw-a_iloaded');
+          const a_itimeout = $id('sp-fw-a_itimeout');
+          const a_manualA = $id('sp-fw-a_manualA');
+          const a_remain = $id('sp-fw-a_remain');
+          const a_maxpage = $id('sp-fw-a_maxpage');
+          const a_separator = $id('sp-fw-a_separator');
+          const a_ipages_0 = $id('sp-fw-a_ipages_0');
+          const a_ipages_1 = $id('sp-fw-a_ipages_1');
+          const a_force = $id('sp-fw-a_force');
 
           // newIframe 输入框的点击
-          const a_newIframe = $('sp-fw-a_newIframe');
-          a_newIframe.addEventListener('click', function () {
+          const a_newIframe = $id('sp-fw-a_newIframe');
+          a_newIframe.addEventListener('click', () => {
             a_useiframe.checked = a_newIframe.checked;
           }, false);
 
-          const a_starti = $('sp-fw-a_starti'); // 开始立即翻页
+          const a_starti = $id('sp-fw-a_starti'); // 开始立即翻页
           a_starti.addEventListener('click', function () {
             if (this.disabled) return;
             let value = Number(a_ipages_1.value);
@@ -5494,75 +5487,74 @@
           }, false);
 
           // 总开关
-          const enable = $('sp-fw-enable');
-          $('sp-fw-setup').addEventListener('click', setup, false);
+          const enable = $id('sp-fw-enable');
+          $id('sp-fw-setup').addEventListener('click', setup, false);
 
-          // 保存设置按钮.
-          const savebutton = $('sp-fw-savebutton');
-          savebutton.addEventListener('click', function (e) {
-            const value = {
-              Rurl: SSS.Rurl,
-              useiframe: gl(useiframe),
-              viewcontent: gl(viewcontent),
-              enable: gl(enable)
-            };
-
-            function gl (obj) {
-              return (obj.type == 'checkbox' ? obj.checked : obj.value);
-            }
-            if (SSS.a_enable !== undefined) {
-              value.a_enable = gl(a_enable);
-              value.a_useiframe = gl(a_useiframe);
-              value.a_newIframe = gl(a_newIframe);
-              value.a_iloaded = gl(a_iloaded);
-              value.a_manualA = gl(a_manualA);
-              value.a_force = gl(a_force);
-              const t_a_itimeout = Number(gl(a_itimeout));
-              value.a_itimeout = isNaN(t_a_itimeout) ? SSS.a_itimeout : (t_a_itimeout >= 0 ? t_a_itimeout : 0);
-              const t_a_remain = Number(gl(a_remain));
-              value.a_remain = isNaN(t_a_remain) ? SSS.a_remain : Number(t_a_remain.toFixed(2));
-              const t_a_maxpage = Number(gl(a_maxpage));
-              value.a_maxpage = isNaN(t_a_maxpage) ? SSS.a_maxpage : (t_a_maxpage >= 1 ? t_a_maxpage : 1);
-              const t_a_ipages_1 = Number(gl(a_ipages_1));
-              value.a_ipages = [gl(a_ipages_0), (isNaN(t_a_ipages_1) ? SSS.a_ipages[1] : (t_a_ipages_1 >= 1 ? t_a_ipages_1 : 1))];
-              value.a_separator = gl(a_separator);
-            }
-            // alert(xToString(value));
-            SSS.savedValue[SSS.sedValueIndex] = value;
-            // alert(xToString(SSS.savedValue));
-            saveValue('spfwset', xToString(SSS.savedValue));
-            if ((e.shiftKey ? !prefs.FW_RAS : prefs.FW_RAS)) { // 按住shift键,执行反向操作.
-              setTimeout(function () {
-                location.reload();
-              }, 1);
-            }
-          }, false);
-
-          function ll (obj, value) {
+          function getObj (obj) {
+            return (obj.type == 'checkbox' ? obj.checked : obj.value);
+          }
+          function setObj (obj, value) {
             if (obj.type == 'checkbox') {
               obj.checked = value;
             } else {
               obj.value = value;
             }
           }
+          // 保存设置按钮.
+          const savebutton = $id('sp-fw-savebutton');
+          savebutton.addEventListener('click', (e) => {
+            const value = {
+              Rurl: SSS.Rurl,
+              useiframe: getObj(useiframe),
+              viewcontent: getObj(viewcontent),
+              enable: getObj(enable)
+            };
+
+            if (SSS.a_enable !== undefined) {
+              value.a_enable = getObj(a_enable);
+              value.a_useiframe = getObj(a_useiframe);
+              value.a_newIframe = getObj(a_newIframe);
+              value.a_iloaded = getObj(a_iloaded);
+              value.a_manualA = getObj(a_manualA);
+              value.a_force = getObj(a_force);
+              const t_a_itimeout = Number(getObj(a_itimeout));
+              value.a_itimeout = isNaN(t_a_itimeout) ? SSS.a_itimeout : (t_a_itimeout >= 0 ? t_a_itimeout : 0);
+              const t_a_remain = Number(getObj(a_remain));
+              value.a_remain = isNaN(t_a_remain) ? SSS.a_remain : Number(t_a_remain.toFixed(2));
+              const t_a_maxpage = Number(getObj(a_maxpage));
+              value.a_maxpage = isNaN(t_a_maxpage) ? SSS.a_maxpage : (t_a_maxpage >= 1 ? t_a_maxpage : 1);
+              const t_a_ipages_1 = Number(getObj(a_ipages_1));
+              value.a_ipages = [getObj(a_ipages_0), (isNaN(t_a_ipages_1) ? SSS.a_ipages[1] : (t_a_ipages_1 >= 1 ? t_a_ipages_1 : 1))];
+              value.a_separator = getObj(a_separator);
+            }
+            // alert(xToString(value));
+            SSS.savedValue[SSS.sedValueIndex] = value;
+            // alert(xToString(SSS.savedValue));
+            saveValue('spfwset', xToString(SSS.savedValue));
+            if ((e.shiftKey ? !prefs.FW_RAS : prefs.FW_RAS)) { // 按住shift键,执行反向操作.
+              setTimeout(() => {
+                location.reload();
+              }, 1);
+            }
+          }, false);
 
           // 载入翻页设置.
           if (SSS.a_enable === undefined) { // 未定义翻页功能.
             a_enable.disabled = true;
             autopager_field.style.display = 'none';
           } else {
-            ll(a_enable, SSS.a_enable);
-            ll(a_useiframe, SSS.a_useiframe);
-            ll(a_newIframe, SSS.a_newIframe);
-            ll(a_iloaded, SSS.a_iloaded);
-            ll(a_itimeout, SSS.a_itimeout);
-            ll(a_manualA, SSS.a_manualA);
-            ll(a_force, SSS.a_force);
-            ll(a_remain, SSS.a_remain);
-            ll(a_maxpage, SSS.a_maxpage);
-            ll(a_separator, SSS.a_separator);
-            ll(a_ipages_0, SSS.a_ipages[0]);
-            ll(a_ipages_1, SSS.a_ipages[1]);
+            setObj(a_enable, SSS.a_enable);
+            setObj(a_useiframe, SSS.a_useiframe);
+            setObj(a_newIframe, SSS.a_newIframe);
+            setObj(a_iloaded, SSS.a_iloaded);
+            setObj(a_itimeout, SSS.a_itimeout);
+            setObj(a_manualA, SSS.a_manualA);
+            setObj(a_force, SSS.a_force);
+            setObj(a_remain, SSS.a_remain);
+            setObj(a_maxpage, SSS.a_maxpage);
+            setObj(a_separator, SSS.a_separator);
+            setObj(a_ipages_0, SSS.a_ipages[0]);
+            setObj(a_ipages_1, SSS.a_ipages[1]);
           }
 
           if (!SSS.a_enable) { // 当前不是翻页模式,禁用立即翻页按钮.
@@ -5574,11 +5566,11 @@
           }
 
           // 载入预读设置.
-          ll(useiframe, SSS.useiframe);
-          ll(viewcontent, SSS.viewcontent);
+          setObj(useiframe, SSS.useiframe);
+          setObj(viewcontent, SSS.viewcontent);
 
           // 总开关
-          ll(enable, SSS.enable);
+          setObj(enable, SSS.enable);
 
           const FWKG_state = {
             loading: '读取中状态',
@@ -5609,24 +5601,24 @@
           // 非opera用fixed定位.
           div.style.position = 'fixed';
           switch (FW_position) {
-            case 1:
-              div.style.top = vertical + 'px';
-              div.style.left = horiz + 'px';
-              break;
-            case 2:
-              div.style.top = vertical + 'px';
-              div.style.right = horiz + 'px';
-              break;
-            case 3:
-              div.style.bottom = vertical + 'px';
-              div.style.right = horiz + 'px';
-              break;
-            case 4:
-              div.style.bottom = vertical + 'px';
-              div.style.left = horiz + 'px';
-              break;
-            default:
-              break;
+          case 1:
+            div.style.top = vertical + 'px';
+            div.style.left = horiz + 'px';
+            break;
+          case 2:
+            div.style.top = vertical + 'px';
+            div.style.right = horiz + 'px';
+            break;
+          case 3:
+            div.style.bottom = vertical + 'px';
+            div.style.right = horiz + 'px';
+            break;
+          case 4:
+            div.style.bottom = vertical + 'px';
+            div.style.left = horiz + 'px';
+            break;
+          default:
+            break;
           }
         }
 
@@ -5803,7 +5795,7 @@
 
           function getRelativeDiv (which) {
             let id = div.id;
-            id = id.replace(/(sp-separator-)(.+)/, function (a, b, c) {
+            id = id.replace(/(sp-separator-)(.+)/, (a, b, c) => {
               return b + String((Number(c) + (which == 'pre' ? -1 : 1)));
             });
             // alert(id);
@@ -5822,42 +5814,46 @@
           let o_scrollY, divS;
 
           switch (target.className) {
-            case 'sp-sp-gotop':
-              scrollIt(window.scrollY, 0);
-              break;
-            case 'sp-sp-gopre': {
-              const prediv = getRelativeDiv('pre');
-              if (!prediv) return;
-              o_scrollY = window.scrollY;
-              let preDS = prediv.getBoundingClientRect().top;
-              if (prefs.sepP) {
-                divS = div.getBoundingClientRect().top;
-                preDS = o_scrollY - (divS - preDS);
-              } else {
-                preDS += o_scrollY - 6;
-              }
-              scrollIt(o_scrollY, preDS);
-              break;
+          case 'sp-sp-gotop':
+            scrollIt(window.scrollY, 0);
+            break;
+          case 'sp-sp-gopre': {
+            const prediv = getRelativeDiv('pre');
+            if (!prediv) {
+              return;
             }
-            case 'sp-sp-gonext': {
-              const nextdiv = getRelativeDiv('next');
-              if (!nextdiv) return;
-              o_scrollY = window.scrollY;
-              let nextDS = nextdiv.getBoundingClientRect().top;
-              if (prefs.sepP) {
-                divS = div.getBoundingClientRect().top;
-                nextDS = o_scrollY + (-divS + nextDS);
-              } else {
-                nextDS += o_scrollY - 6;
-              }
-              scrollIt(o_scrollY, nextDS);
-              break;
+            o_scrollY = window.scrollY;
+            let preDS = prediv.getBoundingClientRect().top;
+            if (prefs.sepP) {
+              divS = div.getBoundingClientRect().top;
+              preDS = o_scrollY - (divS - preDS);
+            } else {
+              preDS += o_scrollY - 6;
             }
-            case 'sp-sp-gobottom':
-              scrollIt(window.scrollY, Math.max(document.documentElement.scrollHeight, document.body.scrollHeight));
-              break;
-            default:
-              break;
+            scrollIt(o_scrollY, preDS);
+            break;
+          }
+          case 'sp-sp-gonext': {
+            const nextdiv = getRelativeDiv('next');
+            if (!nextdiv) {
+              return;
+            }
+            o_scrollY = window.scrollY;
+            let nextDS = nextdiv.getBoundingClientRect().top;
+            if (prefs.sepP) {
+              divS = div.getBoundingClientRect().top;
+              nextDS = o_scrollY + (-divS + nextDS);
+            } else {
+              nextDS += o_scrollY - 6;
+            }
+            scrollIt(o_scrollY, nextDS);
+            break;
+          }
+          case 'sp-sp-gobottom':
+            scrollIt(window.scrollY, Math.max(document.documentElement.scrollHeight, document.body.scrollHeight));
+            break;
+          default:
+            break;
           }
         }
 
@@ -5894,7 +5890,7 @@
             floatWO.updateColor('Astop');
             return;
           }
-          if (window.navigator.language != 'en') {
+          if (window.navigator.language !== 'en') {
             debug(window.navigator.language);
           }
 
@@ -5914,7 +5910,7 @@
           }
 
           let insertPointP;
-          if (insertMode != 2) {
+          if (insertMode !== 2) {
             insertPointP = insertPoint.parentNode;
           }
 
@@ -5950,10 +5946,7 @@
           function removeL (isRemoveAddPage) {
             debug('移除各种事件监听');
             floatWO.updateColor('Astop');
-            const _remove = remove;
-            for (let i = 0, ii = _remove.length; i < ii; i++) { // TODO: forEach()
-              _remove[i]();
-            }
+            remove.forEach(x => x());
 
             if (isRemoveAddPage) {
               const separator = document.querySelector('.sp-separator');
@@ -5990,9 +5983,8 @@
             debug('触发 Hashchang 事件');
             removeL(true);
 
-            setTimeout(function () {
-              nextlink = getElement(SSS.nextLink || 'auto;');
-              nextlink = getFullHref(nextlink);
+            setTimeout(() => {
+              nextlink = getFullHref(getElement(SSS.nextLink || 'auto;'));
               // preLink = getElement(SSS.preLink || 'auto;');
               autopager(SSS, floatWO);
             }, hashchangeTimer);
@@ -6006,7 +5998,7 @@
             // alert(this.contentDocument.body)
             const body = iframe.contentDocument.body;
             if (body && body.firstChild) {
-              setTimeout(function () {
+              setTimeout(() => {
                 doc = iframe.contentDocument;
                 removeScripts(doc);
                 win = iframe.contentWindow || doc;
@@ -6034,13 +6026,13 @@
                     padding:0!important;\
                     visibility:hidden!important;\
                 ';
-              if (SSS.a_sandbox != false) {
+              if (SSS.a_sandbox !== false) {
                 i.sandbox = SSS.a_sandbox;
               }
               i.src = link;
               if (SSS.a_iloaded) {
                 i.addEventListener('load', iframeLoaded, false);
-                remove.push(function () {
+                remove.push(() => {
                   i.removeEventListener('load', iframeLoaded, false);
                 });
               } else {
@@ -6054,7 +6046,7 @@
                   }
                 };
                 window.addEventListener('message', messagehandler, false);
-                remove.push(function () {
+                remove.push(() => {
                   window.removeEventListener('message', messagehandler, false);
                 });
               }
@@ -6109,8 +6101,7 @@
             }
           }
 
-          let ipagesmode = SSS.a_ipages[0];
-          let ipagesnumber = SSS.a_ipages[1];
+          let [ipagesmode, ipagesnumber] = SSS.a_ipages;
           let scrollDo = nullFn;
           let afterInsertDo = nullFn;
           if (prefs.Aplus) {
@@ -6118,7 +6109,9 @@
             doRequest();
           } else {
             scrollDo = doRequest;
-            if (ipagesmode) doRequest();
+            if (ipagesmode) {
+              doRequest();
+            }
           }
 
           let manualDiv;
@@ -6221,7 +6214,7 @@
                   insertedIntoDoc();
                 }
               };
-              input.addEventListener('keyup', function (e) {
+              input.addEventListener('keyup', (e) => {
                 // alert(e.keyCode);
                 if (e.keyCode == 13) { // 回车
                   spage();
@@ -6245,7 +6238,7 @@
                 id: 'sp-sp-md-someinfo'
               }, prefs.someValue));
               document.body.appendChild(div);
-              div.addEventListener('click', function (e) {
+              div.addEventListener('click', (e) => {
                 if (e.target.id == 'sp-sp-md-number') return;
                 spage();
               }, false);
@@ -6444,10 +6437,12 @@
               nextlink = null;
             }
 
-            for (const pe_x of pageElements) {
-              const pe_x_nn = pe_x.nodeName;
-              if (pe_x_nn == 'BODY' || pe_x_nn == 'HTML' || pe_x_nn == 'SCRIPT') continue;
-              fragment.appendChild(pe_x);
+            for (const page of pageElements) {
+              const pN = page.nodeName;
+              if (['BODY', 'HTML', 'SCRIPT'].includes(pN)) {
+                continue;
+              }
+              fragment.appendChild(page);
             }
 
             if (SSS.filter && typeof (SSS.filter) === 'string') { // 功能未完善.
@@ -6456,10 +6451,8 @@
               try {
                 nodes = getAllElements(SSS.filter, fragment);
               } catch (e) {}
-              let nodes_x;
-              for (i = nodes.length - 1; i >= 0; i--) {
-                nodes_x = nodes[i];
-                nodes_x.parentNode.removeChild(nodes_x);
+              for (const node of nodes) {
+                node.parentNode.removeChild(node);
               }
             }
 
@@ -6476,9 +6469,9 @@
             // 处理下一页内容部分链接是否新标签页打开
             if (prefs.forceTargetWindow) {
               const arr = Array.prototype.slice.call(fragment.querySelectorAll('a[href]:not([href^="mailto:"]):not([href^="javascript:"]):not([href^="#"])'));
-              arr.forEach(function (elem) {
+              arr.forEach((elem) => {
                 elem.setAttribute('target', '_blank');
-                if (elem.getAttribute('onclick') == 'atarget(this)') { // 卡饭论坛的控制是否在新标签页打开
+                if (elem.getAttribute('onclick') === 'atarget(this)') { // 卡饭论坛的控制是否在新标签页打开
                   elem.removeAttribute('onclick');
                 }
               });
@@ -6489,7 +6482,7 @@
               const insertParent = insertPoint.parentNode;
               let colNodes = getAllElements('child::tr[1]/child::*[self::td or self::th]', insertParent);
               if (colNodes.length == 0) {
-                  colNodes = getAllElements('child::*[self::td or self::th]', pageElements[0]);
+                colNodes = getAllElements('child::*[self::td or self::th]', pageElements[0]);
               }
               let colums = 0;
               for (const c of colNodes) {
@@ -6519,7 +6512,7 @@
             }
 
             if (imgs) { // 非opera,在iframeDOM取出数据时需要重载图片.
-              setTimeout(function () {
+              setTimeout(() => {
                 const _imgs = imgs;
                 let i;
                 let ii;
@@ -6531,20 +6524,14 @@
               }, 99);
             }
 
-            if (SSS.a_replaceE) {
-              // TODO: map()
+            if (SSS.a_replaceE) { // 替换指定元素
               const oldE = getAllElements(SSS.a_replaceE);
-              const oldE_lt = oldE.length;
-              // alert(oldE_lt);
-              if (oldE_lt > 0) {
+              if (oldE.length > 0) {
                 const newE = getAllElements(SSS.a_replaceE, false, doc, win);
-                const newE_lt = newE.length;
-                // alert(newE_lt);
-                if (newE_lt == oldE_lt) { // 替换
-                  let oldE_x, newE_x;
-                  for (i = 0; i < newE_lt; i++) {
-                    oldE_x = oldE[i];
-                    newE_x = newE[i];
+                if (newE.length === oldE.length) { // 元素均找到，执行替换
+                  for (let i = 0; i < newE.length; i++) {
+                    const oldE_x = oldE[i];
+                    let newE_x = newE[i];
                     newE_x = doc.importNode(newE_x, true);
                     oldE_x.parentNode.replaceChild(newE_x, oldE_x);
                   }
@@ -6608,11 +6595,9 @@
           let relatedObj_0, relatedObj_1;
           if (SSS.a_relatedObj) {
             if (_.isArray(SSS.a_relatedObj)) {
-              relatedObj_0 = SSS.a_relatedObj[0];
-              relatedObj_1 = SSS.a_relatedObj[1];
+              [relatedObj_0, relatedObj_1] = SSS.a_relatedObj;
             } else {
-              relatedObj_0 = SSS.a_pageElement;
-              relatedObj_1 = 'bottom';
+              [relatedObj_0, relatedObj_1] = [SSS.a_pageElement, 'bottom'];
             }
           }
 
@@ -6665,7 +6650,7 @@
               }
             };
             document.addEventListener(ltype, pausehandler, false);
-            remove.push(function () {
+            remove.push(() => {
               document.removeEventListener(ltype, pausehandler, false);
             });
           }
@@ -6690,7 +6675,7 @@
             timeout = setTimeout(scroll, 100);
           }
           window.addEventListener('scroll', timeoutfn, false);
-          remove.push(function () {
+          remove.push(() => {
             window.removeEventListener('scroll', timeoutfn, false);
           });
 
@@ -6844,8 +6829,8 @@
         }
 
         // 是否在frame上加载..
-        if (prefs.DisableI && window.self != window.parent) {
-          const isReturn = !_.find(DIExclude, function (x) {
+        if (prefs.DisableI && window.self !== window.parent) {
+          const isReturn = !_.find(DIExclude, (x) => {
             return x[1] && x[2].test(url);
           });
           if (isReturn) {
@@ -6857,7 +6842,7 @@
 
         // 第一阶段..分析高级模式..
         SITEINFO = SITEINFO.concat(SITEINFO_TP, SITEINFO_comp, SITEINFO_json);
-        if (!SITEINFO_D.numOfRule  || SITEINFO_D.numOfRule != SITEINFO.length) {
+        if (!SITEINFO_D.numOfRule || SITEINFO_D.numOfRule !== SITEINFO.length) {
           SITEINFO_D.numOfRule = SITEINFO.length;
           GM.setValue('SITEINFO_D', JSON.stringify(SITEINFO_D));
         }
@@ -6874,11 +6859,11 @@
           const ii = SITEINFO.length;
 
           if (isChineseUI()) {
-              debug('高级规则数目:',ii);
-              debug('规则数 > ', ii - SITEINFO_json.length, '来自其他来源, 比如: wedata.net');
+            debug('高级规则数目:', ii);
+            debug('规则数 > ', ii - SITEINFO_json.length, '来自其他来源, 比如: wedata.net');
           } else {
-              debug('Number of advanced rules:', ii);
-              debug('Rules with ID > ', ii - SITEINFO_json.length, ' come from other source, ex: wedata.net');
+            debug('Number of advanced rules:', ii);
+            debug('Rules with ID > ', ii - SITEINFO_json.length, ' come from other source, ex: wedata.net');
           }
 
           for (let i = 0; i < ii; i++) {
@@ -6886,11 +6871,11 @@
             const Rurl = toRE(SII.url);
             if (Rurl.test(url)) {
               if (isChineseUI()) {
-                  debug('找到当前站点规则:', SII);
-                  debug('规则ID: ', i + 1);
+                debug('找到当前站点规则:', SII);
+                debug('规则ID: ', i + 1);
               } else {
-                  debug('Find rule for this website: ', SII, '是第', i + 1, '规则');
-                  debug('Rule ID: ', i + 1);
+                debug('Find rule for this website: ', SII, '是第', i + 1, '规则');
+                debug('Rule ID: ', i + 1);
               }
 
 
@@ -6906,7 +6891,7 @@
                 continue;
               }
 
-              if (SII.preLink && SII.preLink != 'auto;') { // 如果设定了具体的preLink
+              if (SII.preLink && SII.preLink !== 'auto;') { // 如果设定了具体的preLink
                 prelink = getElement(SII.preLink);
               } else {
                 if (prefs.autoGetPreLink) {
@@ -6926,7 +6911,7 @@
                 if (!(SII.autopager instanceof Object)) SII.autopager = {};
                 SII.autopager.pageElement = SII.pageElement;
                 if (SII.useiframe) SII.autopager.useiframe = SII.useiframe;
-                if (SII.preLink)   SII.autopager.preLink   = SII.preLink;
+                if (SII.preLink) SII.autopager.preLink = SII.preLink;
                 if (SII.insertBefore) SII.autopager.HT_insert = [SII.insertBefore, 1];
               }
               SSS.a_header = (SII.header === undefined) ? false : SII.header;
@@ -7038,30 +7023,30 @@
 
         if (prefs.arrowKeyPage) {
           debug('添加键盘左右方向键翻页监听.');
-          document.addEventListener('keyup', function (e) {
+          document.addEventListener('keyup', (e) => {
             const tarNN = e.target.nodeName;
-            if (tarNN != 'BODY' && tarNN != 'HTML') return;
+            if (tarNN !== 'BODY' && tarNN !== 'HTML') return;
             switch (e.keyCode) {
-              case 37:
-                superPreloader.back();
-                break;
-              case 39:
-                superPreloader.go();
-                break;
-              default:
-                break;
+            case 37:
+              superPreloader.back();
+              break;
+            case 39:
+              superPreloader.go();
+              break;
+            default:
+              break;
             }
           }, false);
         }
 
         // 监听下一页事件.
         debug('添加鼠标手势翻页监听.');
-        document.addEventListener('superPreloader.go', function () {
+        document.addEventListener('superPreloader.go', () => {
           superPreloader.go();
         }, false);
 
         // 监听下一页事件.
-        document.addEventListener('superPreloader.back', function () {
+        document.addEventListener('superPreloader.back', () => {
           superPreloader.back();
         }, false);
 
@@ -7138,8 +7123,6 @@
           prefetcher(SSS, floatWO);
         }
 
-        let docChecked;
-
         // 获取单个元素,混合
         function getElement (selector, contextNode, doc, win) {
           const _cplink = cplink;
@@ -7172,8 +7155,12 @@
           return ret;
         }
 
+        // TODO: Clean this function
         function autoGetLink (doc, win) {
-          if (!autoMatch.keyMatch) return;
+          if (!autoMatch.keyMatch) {
+            return;
+          }
+
           if (!parseKWRE.done) {
             parseKWRE();
             parseKWRE.done = true;
@@ -7183,26 +7170,9 @@
           doc = doc || document;
           win = win || window;
 
-          if (doc == document) { // 当前文档,只检查一次.
-            // alert(nextlink);
-            if (docChecked) return nextlink;
-            docChecked = true;
-          }
-
-          const _prePageKey = prePageKey;
-          const _nextPageKey = nextPageKey;
-          const _nPKL = nextPageKey.length;
-          const _pPKL = prePageKey.length;
-          const _getFullHref = getFullHref;
-          const _getAllElementsByXpath = getAllElementsByXpath;
-          const _Number = Number;
-          const _domain_port = domain_port;
-          const alllinks = doc.links;
-          const alllinksl = alllinks.length;
-
           const curLHref = cplink;
-          let _nextlink;
-          let _prelink;
+          let _nextlink = undefined;
+          let _prelink = undefined;
           if (!autoGetLink.checked) { // 第一次检查
             _nextlink = nextlink;
             _prelink = prelink;
@@ -7210,7 +7180,6 @@
             _prelink = true;
           }
 
-          const DCEnable = autoMatch.digitalCheck;
           const DCRE = /^\s*\D{0,1}(\d+)\D{0,1}\s*$/;
 
           let i;
@@ -7232,15 +7201,15 @@
 
           function finalCheck (a, type) {
             let ahref = a.getAttribute('href'); // 在chrome上当是非当前页面文档对象的时候直接用a.href访问,不返回href
-            if (ahref == '#') {
+            if (ahref === '#') {
               return null;
             }
-            ahref = _getFullHref(ahref); // 从相对路径获取完全的href;
+            ahref = getFullHref(ahref); // 从相对路径获取完全的href;
 
             // 3个条件:http协议链接,非跳到当前页面的链接,非跨域
-            if (/^https?:/i.test(ahref) && ahref.replace(/#.*$/, '') != curLHref && ahref.match(/https?:\/\/([^\/]+)/)[1] == _domain_port) {
+            if (/^https?:/i.test(ahref) && ahref.replace(/#.*$/, '') !== curLHref && ahref.match(/https?:\/\/([^/]+)/)[1] === domain_port) {
               if (xbug) {
-                debug((type == 'pre' ? '上一页' : '下一页') + '匹配到的关键字为:', atext);
+                debug((type === 'pre' ? '上一页' : '下一页') + '匹配到的关键字为:', atext);
               }
               return a; // 返回对象A
               // return ahref;
@@ -7248,17 +7217,22 @@
           }
 
           if (xbug) {
-            debug('全文档链接数量:', alllinksl);
+            debug('全文档链接数量:', doc.links.length);
           }
 
-          for (const a of alllinks) {
-            if (_nextlink && _prelink) break;
-            if (!a) continue; // undefined跳过
+          for (const a of doc.links) {
+            if (_nextlink && _prelink) {
+              break;
+            }
+            i += 1;
+            if (!a) {
+              continue; // undefined跳过
+            }
             // links集合返回的本来就是包含href的a元素..所以不用检测
             // if(!a.hasAttribute("href"))continue;
             atext = a.textContent;
             if (atext) {
-              if (DCEnable) {
+              if (autoMatch.digitalCheck) {
                 numtext = atext.match(DCRE);
                 if (numtext) { // 是不是纯数字
                   // debug(numtext);
@@ -7268,14 +7242,12 @@
                   initSD = 0;
 
                   if (!_nextlink) {
-                    preS1 = a.previousSibling;
-                    preS2 = a.previousElementSibling;
+                    [preS1, preS2] = [a.previousSibling, a.previousElementSibling];
 
                     while (!(preS1 || preS2) && initSD < searchD) {
                       aP = aP.parentNode;
                       if (aP) {
-                        preS1 = aP.previousSibling;
-                        preS2 = aP.previousElementSibling;
+                        [preS1, preS2] = [aP.previousSibling, aP.previousElementSibling];
                       }
                       initSD++;
                       // alert('initSD: '+initSD);
@@ -7295,11 +7267,11 @@
                         pSNText = pSNText[1];
                         // debug(pSNText)
                         // alert(pSNText)
-                        if (_Number(pSNText) == _Number(numtext) - 1) {
+                        if (Number(pSNText) == Number(numtext) - 1) {
                           // alert(searchedD);
                           nodeType = preSS.nodeType;
                           // alert(nodeType);
-                          if (nodeType == 3 || (nodeType == 1 && (searchedD ? _getAllElementsByXpath('./descendant-or-self::a[@href]', preSS, doc).snapshotLength === 0 : (!preSS.hasAttribute('href') || _getFullHref(preSS.getAttribute('href')) == curLHref)))) {
+                          if (nodeType == 3 || (nodeType == 1 && (searchedD ? getAllElementsByXpath('./descendant-or-self::a[@href]', preSS, doc).snapshotLength === 0 : (!preSS.hasAttribute('href') || getFullHref(preSS.getAttribute('href')) == curLHref)))) {
                             _nextlink = finalCheck(a, 'next');
                             // alert(_nextlink);
                           }
@@ -7310,14 +7282,12 @@
                   }
 
                   if (!_prelink) {
-                    nextS1 = a.nextSibling;
-                    nextS2 = a.nextElementSibling;
+                    [nextS1, nextS2] = [a.previousSibling, a.previousElementSibling];
 
                     while (!(nextS1 || nextS2) && initSD < searchD) {
                       aP = aP.parentNode;
                       if (aP) {
-                        nextS1 = a.nextSibling;
-                        nextS2 = a.nextElementSibling;
+                        [nextS1, nextS2] = [a.previousSibling, a.previousElementSibling];
                       }
                       initSD++;
                       // alert('initSD: '+initSD);
@@ -7336,11 +7306,11 @@
                       if (nSNText) {
                         nSNText = nSNText[1];
                         // alert(pSNText)
-                        if (_Number(nSNText) == _Number(numtext) + 1) {
+                        if (Number(nSNText) == Number(numtext) + 1) {
                           // alert(searchedD);
                           nodeType = nextSS.nodeType;
                           // alert(nodeType);
-                          if (nodeType == 3 || (nodeType == 1 && (searchedD ? _getAllElementsByXpath('./descendant-or-self::a[@href]', nextSS, doc).snapshotLength === 0 : (!nextSS.hasAttribute('href') || _getFullHref(nextSS.getAttribute('href')) == curLHref)))) {
+                          if (nodeType == 3 || (nodeType == 1 && (searchedD ? getAllElementsByXpath('./descendant-or-self::a[@href]', nextSS, doc).snapshotLength === 0 : (!nextSS.hasAttribute('href') || getFullHref(nextSS.getAttribute('href')) == curLHref)))) {
                             _prelink = finalCheck(a, 'pre');
                             // alert(_prelink);
                           }
@@ -7364,8 +7334,7 @@
             if (!atext) continue;
             if (!_nextlink) {
               xbreak = false;
-              for (k = 0; k < _nPKL; k++) {
-                keytext = _nextPageKey[k];
+              for (const keytext of nextPageKey) {
                 if (!(keytext.test(atext))) continue;
                 _nextlink = finalCheck(a, 'next');
                 xbreak = true;
@@ -7374,8 +7343,7 @@
               if (xbreak || _nextlink) continue;
             }
             if (!_prelink) {
-              for (k = 0; k < _pPKL; k++) {
-                keytext = _prePageKey[k];
+              for (const keytext of prePageKey) {
                 if (!(keytext.test(atext))) continue;
                 _prelink = finalCheck(a, 'pre');
                 break;
@@ -7477,7 +7445,7 @@
           while (urlarray.length !== 0) {
             url_info = handleInfo(urlarray.pop());
             lasturl_info = handleInfo(lasturlarray.pop());
-            if (url_info != lasturl_info) {
+            if (url_info !== lasturl_info) {
               if (/[0-9]+/.test(url_info) && (url_info == '2' || /[0-9]+/.test(lasturl_info))) {
                 return [(parseInt(lasturl_info) || 1), parseInt(url_info)];
               }
@@ -7495,8 +7463,8 @@
         } else {
           ralativePageNumarray = getRalativePageNumArray(lastUrl, currentUrl);
           ralativeOff = ralativePageNumarray[1] - ralativePageNumarray[0]; // 用的上一页的相对信息比较的，要补充差值……
-          ralativePageNumarray[1] = ralativePageNumarray[1] + ralativeOff;
-          ralativePageNumarray[0] = ralativePageNumarray[0] + ralativeOff;
+          ralativePageNumarray[1] += ralativeOff;
+          ralativePageNumarray[0] += ralativeOff;
         }
 
         // console.log('[获取实际页数] ', '要比较的3个页数：',arguments, '，得到的差值:', ralativePageNumarray);
@@ -7557,9 +7525,7 @@
   let isUpdating = true;
 
   function checkUpdate (button) {
-    if (isUpdating) {
-      return;
-    }
+    if (isUpdating) return;
 
     button.innerHTML = '正在更新中...';
     button.disabled = 'disabled';
@@ -7666,7 +7632,7 @@
 
     if (saType == 'string') {
       if (sa[0] == '#') {
-          _cplink = doc.location.href;
+        _cplink = doc.location.href;
       }
       index = _cplink.indexOf(sa);
       if (index == -1) {
@@ -7697,7 +7663,7 @@
     const min = obj.min === undefined ? 1 : obj.min;
     const aStr = _cplink.slice(0, index);
     const bStr = _cplink.slice(index);
-    const nbStr = bStr.replace(/^(\d+)(.*)$/, function (a, b, c) {
+    const nbStr = bStr.replace(/^(\d+)(.*)$/, (a, b, c) => {
       b = Number(b) + obj.inc;
       if (b >= max || b < min) return a;
       return b + c;
@@ -7732,7 +7698,7 @@
       return !!(obj && obj.constructor && obj.call && obj.apply);
     };
 
-    ['Arguments', 'Function', 'String', 'Number', 'Date', 'RegExp'].forEach(function (name) {
+    ['Arguments', 'Function', 'String', 'Number', 'Date', 'RegExp'].forEach((name) => {
       _['is' + name] = function (obj) {
         return toString.call(obj) == '[object ' + name + ']';
       };
@@ -7741,7 +7707,7 @@
     // Return the first value which passes a truth test. Aliased as `detect`.
     _.find = function (obj, iterator, context) {
       let result;
-      obj.some(function (value, index, array) {
+      obj.some((value, index, array) => {
         if (iterator.call(context, value, index, array)) {
           result = value;
           return true;
@@ -7951,11 +7917,11 @@
   // ====================  functions  ==============================
   function handleLazyImgSrc (rule, doc) {
     const imgAttrs = rule.split('|');
-    imgAttrs.forEach(function (attr) {
+    imgAttrs.forEach((attr) => {
       attr = attr.trim();
-      [].forEach.call(doc.querySelectorAll('img[' + attr + ']'), function (img) {
+      [].forEach.call(doc.querySelectorAll('img[' + attr + ']'), (img) => {
         const newSrc = img.getAttribute(attr);
-        if (newSrc && newSrc != img.src) {
+        if (newSrc && newSrc !== img.src) {
           img.setAttribute('src', newSrc);
           img.removeAttribute(attr);
         }
@@ -7965,10 +7931,8 @@
 
   function removeScripts (node) { // 移除元素的 script
     const scripts = getAllElements('css;script', node);
-    let scripts_x;
-    for (let i = scripts.length - 1; i >= 0; i--) {
-      scripts_x = scripts[i];
-      scripts_x.parentNode.removeChild(scripts_x);
+    for (const s of scripts) {
+      s.parentNode.removeChild(s);
     }
   }
 
@@ -8008,10 +7972,10 @@
     noticeDiv.innerHTML = html_txt;
     noticeDiv.style.display = 'block';
     noticeDiv.style.opacity = '0.96';
-    noticeDivto2 = setTimeout(function () {
+    noticeDivto2 = setTimeout(() => {
       noticeDiv.style.opacity = '0';
     }, 1666);
-    noticeDivto = setTimeout(function () {
+    noticeDivto = setTimeout(() => {
       noticeDiv.style.display = 'none';
     }, 2000);
   }
@@ -8047,11 +8011,11 @@
     doc = doc || document;
     contextNode = contextNode || doc;
     try {
-        const result = doc.evaluate(xpath, contextNode, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
-        return result.singleNodeValue;
+      const result = doc.evaluate(xpath, contextNode, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null);
+      return result.singleNodeValue;
     } catch (err) {
-        console.log('Invalid xpath: ',xpath);
-        return undefined;
+      console.log('Invalid xpath: ', xpath);
+      return undefined;
     }
   }
 
@@ -8158,7 +8122,7 @@
       C.error('没有找到要转成DOM的字符串');
       return;
     }
-    if (document.documentElement.nodeName != 'HTML') {
+    if (document.documentElement.nodeName !== 'HTML') {
       return new DOMParser().parseFromString(str, 'application/xhtml+xml');
     }
 
@@ -8223,83 +8187,83 @@
   function xToString (x) {
     function toStr (x) {
       switch (typeof x) {
-        case 'undefined':
-          return Str(x);
-        case 'boolean':
-          return Str(x);
-        case 'number':
-          return Str(x);
-        case 'string':
-          return '"' +
-                        (x.replace(/(?:\r\n|\n|\r|\t|\\|\")/g, function (a) {
+      case 'undefined':
+        return Str(x);
+      case 'boolean':
+        return Str(x);
+      case 'number':
+        return Str(x);
+      case 'string':
+        return '"' +
+                        (x.replace(/(?:\r\n|\n|\r|\t|\\|\")/g, (a) => {
                           let ret;
                           switch (a) { // 转成字面量
-                            case '\r\n':
-                              ret = '\\r\\n';
-                              break;
-                            case '\n':
-                              ret = '\\n';
-                              break;
-                            case '\r':
-                              ret = '\\r';
-                              break;
-                            case '\t':
-                              ret = '\\t';
-                              break;
-                            case '\\':
-                              ret = '\\\\';
-                              break;
-                            case '"':
-                              ret = '\\"';
-                              break;
-                            default:
-                              break;
+                          case '\r\n':
+                            ret = '\\r\\n';
+                            break;
+                          case '\n':
+                            ret = '\\n';
+                            break;
+                          case '\r':
+                            ret = '\\r';
+                            break;
+                          case '\t':
+                            ret = '\\t';
+                            break;
+                          case '\\':
+                            ret = '\\\\';
+                            break;
+                          case '"':
+                            ret = '\\"';
+                            break;
+                          default:
+                            break;
                           }
                           return ret;
                         })) + '"';
-        case 'function': {
-          const fnStr = Str(x);
-          return fnStr.indexOf('native code') == -1 ? fnStr : 'function(){}';
+      case 'function': {
+        const fnStr = Str(x);
+        return fnStr.indexOf('native code') === -1 ? fnStr : 'function(){}';
+      }
+      case 'object':
+        // 注,object的除了单纯{},其他的对象的属性会造成丢失..
+        if (x === null) {
+          return Str(x);
         }
-        case 'object':
-          // 注,object的除了单纯{},其他的对象的属性会造成丢失..
-          if (x === null) {
-            return Str(x);
+        let rStr = '';
+        let i;
+        switch (x.constructor.name) {
+        case 'Object':
+          for (i in x) {
+            if (!x.hasOwnProperty(i)) { // 去掉原型链上的属性.
+              continue;
+            }
+            rStr += toStr(i) + ':' + toStr(x[i]) + ',';
           }
-          let rStr = '';
-          let i;
-          switch (x.constructor.name) {
-            case 'Object':
-              for (i in x) {
-                if (!x.hasOwnProperty(i)) { // 去掉原型链上的属性.
-                  continue;
-                }
-                rStr += toStr(i) + ':' + toStr(x[i]) + ',';
-              }
-              return ('{' + rStr.replace(/,$/i, '') + '}');
-            case 'Array':
-              for (i in x) {
-                if (!x.hasOwnProperty(i)) { // 去掉原型链上的属性.
-                  continue;
-                }
-                rStr += toStr(x[i]) + ',';
-              }
-              return '[' + rStr.replace(/,$/i, '') + ']';
-            case 'String':
-              return toStr(Str(x));
-            case 'RegExp':
-              return Str(x);
-            case 'Number':
-              return Str(x);
-            case 'Boolean':
-              return Str(x);
-            default:
-              // alert(x.constructor);//漏了什么类型么?
-              break;
+          return ('{' + rStr.replace(/,$/i, '') + '}');
+        case 'Array':
+          for (i in x) {
+            if (!x.hasOwnProperty(i)) { // 去掉原型链上的属性.
+              continue;
+            }
+            rStr += toStr(x[i]) + ',';
           }
-          break;
+          return '[' + rStr.replace(/,$/i, '') + ']';
+        case 'String':
+          return toStr(Str(x));
+        case 'RegExp':
+          return Str(x);
+        case 'Number':
+          return Str(x);
+        case 'Boolean':
+          return Str(x);
         default:
+          // alert(x.constructor);//漏了什么类型么?
           break;
+        }
+        break;
+      default:
+        break;
       }
     }
     const Str = String;
@@ -8321,7 +8285,7 @@
 
   function wildcardToRegExpStr (urlstr) {
     if (urlstr.source) return urlstr.source;
-    const reg = urlstr.replace(/[()\[\]{}|+.,^$?\\]/g, '\\$&').replace(/\*+/g, function (str) {
+    const reg = urlstr.replace(/[()\[\]{}|+.,^$?\\]/g, '\\$&').replace(/\*+/g, (str) => {
       return str === '*' ? '.*' : '[^/]*';
     });
     return '^' + reg + '$';
@@ -8335,41 +8299,41 @@
     let v2parts = v2.split('.');
 
     function isValidPart(x) {
-        return (lexicographical ? /^\d+[A-Za-z]*$/ : /^\d+$/).test(x);
+      return (lexicographical ? /^\d+[A-Za-z]*$/ : /^\d+$/).test(x);
     }
 
     if (!v1parts.every(isValidPart) || !v2parts.every(isValidPart)) {
-        return NaN;
+      return NaN;
     }
 
     if (zeroExtend) {
-        while (v1parts.length < v2parts.length) v1parts.push("0");
-        while (v2parts.length < v1parts.length) v2parts.push("0");
+      while (v1parts.length < v2parts.length) v1parts.push("0");
+      while (v2parts.length < v1parts.length) v2parts.push("0");
     }
 
     if (!lexicographical) {
-        v1parts = v1parts.map(Number);
-        v2parts = v2parts.map(Number);
+      v1parts = v1parts.map(Number);
+      v2parts = v2parts.map(Number);
     }
 
     for (let i = 0; i < v1parts.length; ++i) {
-        if (v2parts.length == i) {
-            return 1;
-        }
+      if (v2parts.length === i) {
+        return 1;
+      }
 
-        if (v1parts[i] == v2parts[i]) {
-            continue;
-        }
-        else if (v1parts[i] > v2parts[i]) {
-            return 1;
-        }
-        else {
-            return -1;
-        }
+      if (v1parts[i] === v2parts[i]) {
+        continue;
+      }
+      else if (v1parts[i] > v2parts[i]) {
+        return 1;
+      }
+      else {
+        return -1;
+      }
     }
 
-    if (v1parts.length != v2parts.length) {
-        return -1;
+    if (v1parts.length !== v2parts.length) {
+      return -1;
     }
 
     return 0;
